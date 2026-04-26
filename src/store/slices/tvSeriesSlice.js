@@ -8,6 +8,7 @@ const tvSeriesSlice = createSlice({
         topRatedSeries: null,
         upcomingSeries: null,
         gptSuggestedSeries: null,
+        SeriesDetails: null,
         trailer: null,
     },
     reducers: {
@@ -20,16 +21,19 @@ const tvSeriesSlice = createSlice({
         addTopRatedSeries: (state, action) => {
             state.topRatedSeries = action.payload;
         },
-        addUpcomingSeries : (state, action) => {
+        addUpcomingSeries: (state, action) => {
             state.upcomingSeries = action.payload;
         },
         addTrailer: (state, action) => {
             state.trailer = action.payload;
+        },
+        addSeriesDetails: (state, action) => {
+            state.SeriesDetails = action.payload;
         },
         addGptSuggestedSeries: (state, action) => {
             state.gptSuggestedSeries = action.payload;
         },
     },
 });
-export const { addSeries,addTrailer,addPopularSeries,addTopRatedSeries,addUpcomingSeries, addGptSuggestedSeries  } = tvSeriesSlice.actions;
+export const { addSeries, addTrailer, addPopularSeries, addTopRatedSeries, addUpcomingSeries, addSeriesDetails, addGptSuggestedSeries } = tvSeriesSlice.actions;
 export default tvSeriesSlice.reducer;

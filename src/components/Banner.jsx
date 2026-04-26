@@ -23,7 +23,7 @@ const Banner = ({ type }) => {
   const movie = movies?.[index];
   if (!movie) return null;
 
- 
+
   const next = () => {
     setIndex((prev) => (prev + 1) % movies.length);
   };

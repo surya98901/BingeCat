@@ -22,7 +22,7 @@ const MovieCard = ({ movie }) => {
         {movie.title || movie.name}
       </h1>
 
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-gray-400 p-1">
         {(movie.release_date || movie.first_air_date)?.split("-")[0]}
       </p>
     </div>

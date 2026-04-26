@@ -1,5 +1,4 @@
 
-import BackGroundVideo from "./BackGroundVideo";
 import MovieContainer from "./MovieContainer";
 import Banner from "./Banner";
 
@@ -13,7 +12,8 @@ const Browse = ({ type })=>{
             {genes.map((gene) => (
                 <MovieContainer key={gene} gene={gene} type={containerType} />
             ))}
+            
         </div>
     )
 }
-export default Browse;  
+export default Browse; 

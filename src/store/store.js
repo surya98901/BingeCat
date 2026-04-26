@@ -4,6 +4,7 @@ import moviesReducer from "./slices/moviesSlice";
 import tvSeriesReducer from "./slices/tvSeriesSlice";
 // import searchReducer from "./searchSlice";
 import themeReducer from "./slices/themeSlice";
+import watchProviderReducer from "./slices/watchProviderslice"; 
 
 
 const store = configureStore({
@@ -11,8 +12,8 @@ const store = configureStore({
     user: userReducer,
     movies: moviesReducer,
     tvSeries: tvSeriesReducer,
-    // search: searchReducer,
-    theme : themeReducer,
+    watchProvider: watchProviderReducer,
+    theme: themeReducer,
   },
 });
 

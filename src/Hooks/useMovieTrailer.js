@@ -12,7 +12,6 @@ const useMovieTrailer = (id) => {
       API_OPTIONS
     );
     const data = await response.json();
-    console.log(data)
     const movieTraileronly =  data.results.filter(item => item.type === "Trailer");
     dispatch(addTrailer(movieTraileronly[0]));
   };
