@@ -1,6 +1,7 @@
 import { IMAGE_URL } from "../assets/constants";
 import useWatchProvider from "../Hooks/useWatchProviders";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 
 const WatchProviderList = ({ id }) => {
   useWatchProvider(id);
@@ -21,15 +22,20 @@ const WatchProviderList = ({ id }) => {
         if (!list) return null;
 
         return (
-          <div key={p} className="">
-            <label className="capitalize text-l font-bold mr-5">{p}:</label>
-            <div className="flex gap-5 my-5 ">
+          <div key={p}>
+            <label className="capitalize text-l font-bold mr-5">
+              {p}:
+            </label>
+
+            <div className="flex gap-5 my-5">
               {list.map((wp) => (
-                <img
+                <motion.img
                   key={wp.provider_id}
                   src={IMAGE_URL + wp.logo_path}
                   alt={wp.provider_name}
                   className="w-[40px] h-[40px] object-contain rounded-lg"
+                  whileHover={{ scale: 2 }}
+                  transition={{ type: "spring", stiffness: 250, damping: 15 }}
                 />
               ))}
             </div>

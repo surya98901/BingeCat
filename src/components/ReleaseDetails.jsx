@@ -2,6 +2,7 @@ import { p } from "framer-motion/client";
 import { formatMoney, formatRuntime } from "../ReUsables/reusableFunction";
 import { IMAGE_URL } from "../assets/constants";
 import WatchProviderList from "./WatchProviderlist";
+import { motion } from "framer-motion";
 const ReleaseDetails = ({ movie }) => {
     return (
         <div className="flex flex-col gap-3">
@@ -24,15 +25,15 @@ const ReleaseDetails = ({ movie }) => {
             </div>
             <WatchProviderList id={movie.id} />
             {movie.budget > 0 && movie.revenue > 0 && <div className="flex gap-5">
-                 <div className="flex flex-col bg-green-700 text-white p-3 rounded-lg w-[120px]">
+                <div className="flex flex-col bg-green-700 text-white p-3 rounded-lg w-[120px] items-center">
                     <label className="text-sm font-semibold">Budget</label>
                     <p className="text-lg font-bold">
                         {formatMoney(movie.budget)}
                     </p>
                 </div>
-                <div className="flex flex-col bg-yellow-500 text-black p-3 rounded-lg w-[120px]">
+                <div className="flex flex-col bg-yellow-500 text-black p-3 rounded-lg w-[120px] items-center">
                     <label className="text-sm font-semibold">Revenue</label>
-                    <p className="text-lg font-bold">
+                    <p className="text-lg font-bold ">
                         {formatMoney(movie.revenue)}
                     </p>
                 </div>
@@ -42,15 +43,24 @@ const ReleaseDetails = ({ movie }) => {
 
                 <div className="flex flex-wrap gap-4 mt-2">
                     {movie.production_companies?.map((company) => (
-                        <div key={company.id} className="flex items-center gap-4 ">
-                            {company.logo_path ? <img
-                                src={IMAGE_URL + company.logo_path}
-                                alt={company.name}
-                                className="object-contain rounded-lg w-[160px] h-[80px] dark:bg-gray-200  p-2"
-
-                            /> :
-                                <p className="rounded-lg w-[160px] h-[80px] dark:bg-gray-200 p-2 dark:text-black text-xl font-bold items-center">{company.name}</p>}
-                        </div>
+                        <motion.div
+                            key={company.id}
+                            className="flex gap-4"
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                        >
+                            {company.logo_path ? (
+                                <img
+                                    src={IMAGE_URL + company.logo_path}
+                                    alt={company.name}
+                                    className="object-contain rounded-lg w-[160px] h-[80px] dark:bg-gray-200 p-2"
+                                />
+                            ) : (
+                                <p className="flex items-center justify-center text-center rounded-lg w-[160px] h-[80px] dark:bg-gray-200 dark:text-black text-xl font-bold px-2 break-words">
+                                    {company.name}
+                                </p>
+                            )}
+                        </motion.div>
                     ))}
                 </div>
             </div>
