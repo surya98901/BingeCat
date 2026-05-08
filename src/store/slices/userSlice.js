@@ -1,42 +1,72 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  user: null,
-};
-
-const updateUserField = (state, field, value) => {
-  if (!state.user) return;
-  state.user[field] = value;
+  currentUser: null,
+  movieList: [],
+  seriesList: [],
 };
 
 const userSlice = createSlice({
   name: "user",
+
   initialState,
+
   reducers: {
+
+    // User Authentication
     setUser: (state, action) => {
-      state.user = action.payload;
+      state.currentUser = action.payload;
     },
 
     clearUser: (state) => {
-      state.user = null;
+      state.currentUser = null;
+      state.movieList = [];
+      state.seriesList = [];
     },
 
-    setMovieList: (state, action) => {
-      updateUserField(state, "movieList", action.payload);
+    // Movie Watchlist
+    addMovie: (state, action) => {
+
+      const exists = state.movieList.some(
+        (movie) => movie.id === action.payload.id
+      );
+
+      if (!exists) {
+        state.movieList.push(action.payload);
+      }
     },
 
-    setSeriesList: (state, action) => {
-      updateUserField(state, "seriesList", action.payload);
+    removeMovie: (state, action) => {
+      state.movieList = state.movieList.filter(
+        (movie) => movie.id !== action.payload
+      );
     },
 
-    setWatchlist: (state, action) => {
-      updateUserField(state, "watchlist", action.payload);
+    // Series Watchlist
+    addSeries: (state, action) => {
+
+      const exists = state.seriesList.some(
+        (series) => series.id === action.payload.id
+      );
+
+      if (!exists) {
+        state.seriesList.push(action.payload);
+      }
     },
 
-    // 🔥 BONUS: generic updater (very powerful)
-    updateUserData: (state, action) => {
-      if (!state.user) return;
-      Object.assign(state.user, action.payload);
+    removeSeries: (state, action) => {
+      state.seriesList = state.seriesList.filter(
+        (series) => series.id !== action.payload
+      );
+    },
+
+    // Clear Lists
+    clearMovieList: (state) => {
+      state.movieList = [];
+    },
+
+    clearSeriesList: (state) => {
+      state.seriesList = [];
     },
   },
 });
@@ -44,10 +74,16 @@ const userSlice = createSlice({
 export const {
   setUser,
   clearUser,
-  setMovieList,
-  setSeriesList,
-  setWatchlist,
-  updateUserData,
+
+  addMovie,
+  removeMovie,
+
+  addSeries,
+  removeSeries,
+
+  clearMovieList,
+  clearSeriesList,
+
 } = userSlice.actions;
 
 export default userSlice.reducer;

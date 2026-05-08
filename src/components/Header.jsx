@@ -1,23 +1,30 @@
 import { useState, useEffect } from "react";
-import { Film, Tv, Search, SunMoon, Bell, UserRound } from "lucide-react";
+import { Film, Tv, Search, SunMoon, Bell, UserRound, Compass, Heart, Bookmark } from "lucide-react";
 import { setTheme } from "../theme";
 import { useDispatch, useSelector } from "react-redux";
 import { ToggleTheme } from "../store/slices/themeSlice";
 import LogoTextTheme1 from "../svgs/LogoTextSVG";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import SlideToSwitchPath from "../ReUsables/SlideToSwitchPath";
 import BingeCatButton from "../ReUsables/BingeCatButton";
+import { label } from "framer-motion/client";
 
 const tabs = [
     { label: "Movies", icon: <Film size={14} />, path: "/BingeCat/movies" },
     { label: "Series", icon: <Tv size={14} />, path: "/BingeCat/series" },
 ];
 
-const navButtons = ["Explore", "For You", "Watchlist"];
+const navButtons = [
+    { label: "Explore", icon: <Compass size={20} />, path: "/BingeCat/explore" },
+    { label: "For You", icon: <Heart size={20} />, path: "/BingeCat/for-you" },
+    { label: "Watchlist", icon: <Bookmark size={20} />, path: "/BingeCat/watchlist" }]
 
 const Header = () => {
     const theme = useSelector(state => state.theme.theme);
     const user = useSelector((state) => state.user.user);
+    const watchlist = useSelector(
+        (state) => state.user.movieList
+    );
     const [active, setActive] = useState(0);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -49,7 +56,7 @@ const Header = () => {
                         />
                     </div>
                 </div>
-                <div className="flex items-center gap-6 w-[60%] justify-end">
+                <div className="flex items-center gap-2 w-[60%] justify-end">
                     <div className="flex text-black dark:text-white items-center dark:bg-gray-900 rounded-full px-2 w-[40%]
                         border border-gray-700 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-500/30">
                         <input
@@ -61,9 +68,18 @@ const Header = () => {
                         <Search size={18} className="text-gray-400" />
                     </div>
                     {navButtons.map((btn) => (
-                        <BingeCatButton key={btn} variant="ghost">
-                            {btn}
-                        </BingeCatButton>
+                        <Link to={btn.path} key={btn.label}>
+                            <BingeCatButton
+                                variant="ghost"
+                                className="text-black dark:text-gray-400"
+                            >
+                                {btn.icon}
+                                {btn.label === "Watchlist" && watchlist.length > 0 && (
+                                    <span className="absolute bg-purple-700 text-white text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center font-semibold">
+                                        {watchlist.length}
+                                    </span>)}
+                            </BingeCatButton>
+                        </Link>
                     ))}
 
                     {!user ? (
@@ -83,7 +99,7 @@ const Header = () => {
                     )}
                     <BingeCatButton
                         variant="ghost"
-                        className="text-black dark:text-gray-400 rounded-full p-1"
+                        className="text-black dark:text-gray-400 rounded-full "
                         onClick={() => dispatch(ToggleTheme())}
                     >
                         <SunMoon size={25} />

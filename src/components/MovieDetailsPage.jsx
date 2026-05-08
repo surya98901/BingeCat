@@ -11,6 +11,9 @@ import SeriesDetails from "./SeriesDetails";
 import AwardsBanner from "./AwardsBanner";
 import useGetCredits from "../Hooks/useGetCredits";
 import CastContainer from "./CastContainer";
+import MediaSection from "./MediaSection";
+import useGetMediaById from "../Hooks/useGetMediaById";
+
 
 
 const MovieDetailsPage = () => {
@@ -23,6 +26,7 @@ const MovieDetailsPage = () => {
     useFindMovieById(id, type);
 
     const credits = useGetCredits(id, type);
+    const media = useGetMediaById(type, id);
     const movie = useSelector((state) =>
         type === "movie"
             ? state.movies.movieDetails
@@ -85,10 +89,11 @@ const MovieDetailsPage = () => {
             <div className="section-2 flex mx-30 p-2">
                 <div className="leftpart w-[75%] p-10 border-r border-purple-700">
                     <AwardsBanner />
-                    <div className="w-full h-[500vh] text-xl p-5">
+                    <div className="w-full text-xl p-5">
                         <CastContainer credits={credits} />
                         <p className="m-2">fullcast -</p>
                     </div>
+                    <MediaSection media = {media} />
                     <div className="w-full h-[20vh] border-y border-purple-700  text-xl p-5">
                         <label htmlFor=""> suggestons</label>
                         sugestion movie card

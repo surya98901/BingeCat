@@ -19,7 +19,6 @@ const SlideToSwitchPath = ({ tabs, active, handleTabClick }) => {
                     className={`relative z-10 flex items-center justify-center gap-1 flex-1 p-1 text-xs font-medium transition-colors
                                     ${active === index ? "text-white" : "text-black dark:text-gray-300"}`}
                 >
-                    {tab.icon}
                     {tab.label}
                 </button>
             ))}

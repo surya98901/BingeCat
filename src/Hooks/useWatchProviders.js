@@ -12,7 +12,6 @@ const useWatchProvider = (id) => {
       API_OPTIONS
     );
     const data = await response.json();
-    console.log(data.results.IN);
     dispatch(setWatchProviders(data.results.IN));
   };
 

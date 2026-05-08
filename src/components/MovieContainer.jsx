@@ -57,6 +57,7 @@ const MovieContainer = ({ gene, type }) => {
     const [showLeft, setShowLeft] = useState(false);
     const [showRight, setShowRight] = useState(true);
     const [activeId, setActiveId] = useState(null);
+    const [active, setActive] = useState(0);
 
     const checkScroll = () => {
         const el = scrollRef.current;
@@ -90,7 +91,7 @@ const MovieContainer = ({ gene, type }) => {
                 <h1 className="text-lg font-semibold dark:text-white capitalize">
                     {gene}
                 </h1>
-                <SlideButtonsList options={options} />
+                <SlideButtonsList options={options} active={active} setActive={setActive} />
             </div>
 
             <div className="relative group overflow-visible">
