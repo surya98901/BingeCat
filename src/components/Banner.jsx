@@ -2,6 +2,9 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { IMAGE_URL } from "../assets/constants";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Film, Tv, Search, SunMoon, Bell, UserRound, Compass, Heart, Bookmark } from "lucide-react";
+
 
 const Banner = ({ type }) => {
     const popularMovies = useSelector((state) => state.movies.popularMovies);
@@ -33,7 +36,7 @@ const Banner = ({ type }) => {
   };
 
   return (
-    <div className="relative w-full h-[70vh] overflow-hidden text-white group ">
+    <div className="relative w-full h-[90vh] overflow-hidden mt-10 text-white group ">
 
 
       <img
@@ -88,9 +91,11 @@ const Banner = ({ type }) => {
             <button className="bg-purple-600 px-6 py-2 rounded-md font-semibold">
               Watch Trailer
             </button>
+            <Link to={`${movie.id}`}>
             <button className="bg-gray-700/70 px-6 py-2 rounded-md">
               More Info
-            </button>
+            </button></Link>
+            
           </div>
         </div>
       </div>

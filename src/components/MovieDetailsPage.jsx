@@ -13,6 +13,9 @@ import useGetCredits from "../Hooks/useGetCredits";
 import CastContainer from "./CastContainer";
 import MediaSection from "./MediaSection";
 import useGetMediaById from "../Hooks/useGetMediaById";
+import { Play, Heart, Bookmark } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { addMovie } from "../store/slices/userSlice";
 
 
 
@@ -33,6 +36,13 @@ const MovieDetailsPage = () => {
             : state.tvSeries.SeriesDetails
     );
     if (!movie) return <h1>Loading...</h1>;
+    const dispatch = useDispatch();
+    const watchlist = useSelector(
+        (state) => state.user.movieList
+    );
+    const isSaved = watchlist.some(
+        (item) => item.id === movie.id
+    );
 
     return (
         <div className="">
@@ -67,11 +77,17 @@ const MovieDetailsPage = () => {
                                 <p> ⭐ {movie.vote_average?.toFixed(1)}</p>
                                 <p>emoji</p>
                             </div>
-                            <div className=" generic gap-3">
-                                <BingCatButton variant="round">+</BingCatButton>
-                                <BingCatButton variant="round">like</BingCatButton>
-                                <BingCatButton variant="round">watch later</BingCatButton>
-                                <BingCatButton variant="round">play trailer</BingCatButton>
+                            <div className=" generic gap-3 mt-2 flex">
+                                <BingCatButton variant="round"><Heart /></BingCatButton>
+                                <BingCatButton variant="round"
+                                    className={`px-1.5 ${isSaved
+                                        ? "text-yellow-400"
+                                        : "text-white"
+                                        }`}
+                                    onClick={() => { dispatch(addMovie(movie)) }}>
+                                    <Bookmark />
+                                </BingCatButton>
+                                <BingCatButton variant="round"><Play /></BingCatButton>
                             </div>
                         </div>
                         <label className="">Overview</label>
@@ -93,7 +109,7 @@ const MovieDetailsPage = () => {
                         <CastContainer credits={credits} />
                         <p className="m-2">fullcast -</p>
                     </div>
-                    <MediaSection media = {media} />
+                    <MediaSection media={media} />
                     <div className="w-full h-[20vh] border-y border-purple-700  text-xl p-5">
                         <label htmlFor=""> suggestons</label>
                         sugestion movie card

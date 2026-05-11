@@ -67,10 +67,7 @@ const MovieDetailsAlert = ({ movie }) => {
                                 ? "text-yellow-400"
                                 : "text-white"
                         }`}
-                        onClick={() => {dispatch(addMovie(movie))
-                            console.log(watchlist);
-                            
-                        }}
+                        onClick={() => {dispatch(addMovie(movie))  }}
                     >
                         <Bookmark
                             size={16}
