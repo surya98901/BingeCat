@@ -23,7 +23,7 @@ const Header = () => {
     const theme = useSelector(state => state.theme.theme);
     const user = useSelector((state) => state.user.user);
     const watchlist = useSelector(
-        (state) => state.user.movieList
+        (state) => state.user.watchList
     );
     const [active, setActive] = useState(0);
     const navigate = useNavigate();

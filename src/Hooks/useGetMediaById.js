@@ -26,10 +26,10 @@ const useGetMediaById = (mediaType, mediaId) => {
         setMedia((prev) => ({ ...prev, images: data }));
     };
 
-    useEffect(() => {
+    useEffect(() => { if(mediaId){
         getvideo(mediaId);
         getImages(mediaId);
-    }, []);
+    }}, [   mediaId, mediaType]);
     return media;
 };
 

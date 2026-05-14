@@ -11,7 +11,7 @@ const MovieDetailsAlert = ({ movie }) => {
     const dispatch = useDispatch();
 
     const watchlist = useSelector(
-        (state) => state.user.movieList
+        (state) => state.user.watchList
     );
 
     const isSaved = watchlist.some(

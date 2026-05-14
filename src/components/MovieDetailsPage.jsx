@@ -22,12 +22,8 @@ import { addMovie } from "../store/slices/userSlice";
 const MovieDetailsPage = () => {
     const { id } = useParams();
     const location = useLocation();
-
     const type = location.pathname.includes("movies") ? "movie" : "tv";
-
-
     useFindMovieById(id, type);
-
     const credits = useGetCredits(id, type);
     const media = useGetMediaById(type, id);
     const movie = useSelector((state) =>
@@ -35,11 +31,12 @@ const MovieDetailsPage = () => {
             ? state.movies.movieDetails
             : state.tvSeries.SeriesDetails
     );
-    if (!movie) return <h1>Loading...</h1>;
     const dispatch = useDispatch();
     const watchlist = useSelector(
-        (state) => state.user.movieList
+        (state) => state.user.watchList
     );
+    if (!movie || !credits || !media) return <h1>Loading...</h1>;
+    
     const isSaved = watchlist.some(
         (item) => item.id === movie.id
     );

@@ -2,17 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentUser: null,
-  movieList: [],
-  seriesList: [],
+  watchList: [],
 };
 
 const userSlice = createSlice({
   name: "user",
 
   initialState,
-
   reducers: {
-
     // User Authentication
     setUser: (state, action) => {
       state.currentUser = action.payload;
@@ -20,53 +17,29 @@ const userSlice = createSlice({
 
     clearUser: (state) => {
       state.currentUser = null;
-      state.movieList = [];
-      state.seriesList = [];
+      state.watchList = [];
     },
 
     // Movie Watchlist
     addMovie: (state, action) => {
-
-      const exists = state.movieList.some(
-        (movie) => movie.id === action.payload.id
+      const exists = state.watchList.some(
+        (movie) => movie.id === action.payload.id,
       );
 
       if (!exists) {
-        state.movieList.push(action.payload);
+        state.watchList.push(action.payload);
       }
     },
 
     removeMovie: (state, action) => {
-      state.movieList = state.movieList.filter(
-        (movie) => movie.id !== action.payload
-      );
-    },
-
-    // Series Watchlist
-    addSeries: (state, action) => {
-
-      const exists = state.seriesList.some(
-        (series) => series.id === action.payload.id
-      );
-
-      if (!exists) {
-        state.seriesList.push(action.payload);
-      }
-    },
-
-    removeSeries: (state, action) => {
-      state.seriesList = state.seriesList.filter(
-        (series) => series.id !== action.payload
+      state.watchList = state.watchList.filter(
+        (movie) => movie.id !== action.payload,
       );
     },
 
     // Clear Lists
-    clearMovieList: (state) => {
-      state.movieList = [];
-    },
-
-    clearSeriesList: (state) => {
-      state.seriesList = [];
+    clearWatchList: (state) => {
+      state.watchList = [];
     },
   },
 });
@@ -77,13 +50,7 @@ export const {
 
   addMovie,
   removeMovie,
-
-  addSeries,
-  removeSeries,
-
-  clearMovieList,
-  clearSeriesList,
-
+  clearWatchList,
 } = userSlice.actions;
 
 export default userSlice.reducer;
