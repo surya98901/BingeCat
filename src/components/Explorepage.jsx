@@ -1,5 +1,11 @@
 import { ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import {
+  showmList,
+  availabilitiesList,
+  geners,
+  languages,
+} from "../assets/constants";
 
 const Explorepage = () => {
   const [click, setClick] = useState(false);
@@ -7,60 +13,6 @@ const Explorepage = () => {
   const filterClickHandler = () => {
     setClick(!click);
   };
-  const showmList = ["Everything", "Tv shows", "Movies"];
-  const availabilitiesList = [
-    "All availabilities",
-    "MediaStream",
-    "Free",
-    "Ads",
-    "Rent",
-    "Buy",
-  ];
-  const genres = [
-    "Action & Adventure",
-    "Animation",
-    "Comedy",
-    "Crime",
-    "Documentary",
-    "Drama",
-    "Family",
-    "Kids",
-    "Mystery",
-    "News",
-    "Reality",
-    "Sci-Fi & Fantasy",
-    "Soap",
-    "Talk",
-    "War & Politics",
-    "Western",
-  ];
-  const languages = [
-    { language: "English", code: 482 },
-    { language: "Spanish", code: 731 },
-    { language: "French", code: 264 },
-    { language: "German", code: 918 },
-    { language: "Italian", code: 547 },
-    { language: "Portuguese", code: 386 },
-    { language: "Russian", code: 629 },
-    { language: "Chinese", code: 145 },
-    { language: "Japanese", code: 873 },
-    { language: "Korean", code: 294 },
-    { language: "Hindi", code: 561 },
-    { language: "Telugu", code: 708 },
-    { language: "Tamil", code: 432 },
-    { language: "Malayalam", code: 956 },
-    { language: "Kannada", code: 317 },
-    { language: "Bengali", code: 684 },
-    { language: "Marathi", code: 253 },
-    { language: "Gujarati", code: 792 },
-    { language: "Punjabi", code: 468 },
-    { language: "Arabic", code: 905 },
-    { language: "Turkish", code: 341 },
-    { language: "Thai", code: 617 },
-    { language: "Vietnamese", code: 529 },
-    { language: "Indonesian", code: 884 },
-    { language: "Urdu", code: 176 },
-  ];
 
   return (
     <div className="mt-15 flex w-full justify-center px-6 py-5">
@@ -96,7 +48,7 @@ const Explorepage = () => {
               </div>
 
               {click && (
-                <div className="flex flex-col rounded-b-xl bg-white text-black">
+                <div className="flex flex-col rounded-b-xl bg-white text-black border border-purple-700 ">
                   <div className="border-b border-zinc-200 p-4 flex flex-col gap-1">
                     Show Me
                     {showmList.map((item) => (

@@ -24,7 +24,6 @@ const CastContainer = ({ credits }) => {
     <div className="group relative flex flex-col gap-3 overflow-hidden">
       <label className="capitalize text-l font-bold">Cast</label>
 
-      {/* LEFT */}
       {index > 0 && (
         <ChevronLeft
           size={30}
@@ -35,7 +34,6 @@ const CastContainer = ({ credits }) => {
         />
       )}
 
-      {/* RIGHT */}
       {index < maxIndex && (
         <ChevronRight
           size={30}
@@ -46,7 +44,6 @@ const CastContainer = ({ credits }) => {
         />
       )}
 
-      {/* SLIDER */}
       <div className="overflow-hidden">
         <motion.div
           animate={{ x: -index * chunkSize * cardWidth }}
@@ -63,9 +60,7 @@ const CastContainer = ({ credits }) => {
                 alt={actor.name}
                 className="w-full h-[160px] object-cover"
               />
-              <p className="text-sm font-bold mt-2 text-center">
-                {actor.name}
-              </p>
+              <p className="text-sm font-bold mt-2 text-center">{actor.name}</p>
               <p className="text-xs text-gray-500 text-center">
                 {actor.character}
               </p>

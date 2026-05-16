@@ -3,29 +3,32 @@ import { useEffect, useState } from "react";
 import { IMAGE_URL } from "../assets/constants";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Film, Tv, Search, SunMoon, Bell, UserRound, Compass, Heart, Bookmark } from "lucide-react";
-
+import VideoplayerAlert from "./VideoplayerAlert";
 
 const Banner = ({ type }) => {
-    const popularMovies = useSelector((state) => state.movies.popularMovies);
-    const popularSeries = useSelector((state) => state.tvSeries.popularSeries);
+  const popularMovies = useSelector((state) => state.movies.popularMovies);
+
+  const popularSeries = useSelector((state) => state.tvSeries.popularSeries);
+
   const movies = type === "movie" ? popularMovies : popularSeries;
+
   const [index, setIndex] = useState(0);
 
- 
+  const [playTrailer, setPlayTrailer] = useState(false);
+
   useEffect(() => {
-    if (!movies?.length) return;
+    if (!movies?.length || playTrailer) return;
 
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % movies.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [movies]);
+  }, [movies, playTrailer]);
 
   const movie = movies?.[index];
-  if (!movie) return null;
 
+  if (!movie) return null;
 
   const next = () => {
     setIndex((prev) => (prev + 1) % movies.length);
@@ -36,9 +39,7 @@ const Banner = ({ type }) => {
   };
 
   return (
-    <div className="relative w-full h-[90vh] overflow-hidden mt-10 text-white group ">
-
-
+    <div className="relative w-full h-[90vh] overflow-hidden mt-10 text-white group">
       <img
         key={movie.backdrop_path}
         src={IMAGE_URL + movie.backdrop_path}
@@ -46,15 +47,13 @@ const Banner = ({ type }) => {
         className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
       />
 
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent" />
 
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-
-  
       <button
         onClick={prev}
         className="absolute left-5 top-1/2 -translate-y-1/2 z-20 
-        bg-black/50 p-3 rounded-full opacity-0 group-hover:opacity-100 transition mx-20 bg-purple-700"
+        bg-purple-700 p-3 rounded-full opacity-0 
+        group-hover:opacity-100 transition mx-20"
       >
         <ChevronLeft />
       </button>
@@ -62,12 +61,12 @@ const Banner = ({ type }) => {
       <button
         onClick={next}
         className="absolute right-5 top-1/2 -translate-y-1/2 z-20 
-        bg-black/50 p-3 rounded-full opacity-0 group-hover:opacity-100 transition mx-20 bg-purple-700"
+        bg-purple-700 p-3 rounded-full opacity-0 
+        group-hover:opacity-100 transition mx-20"
       >
         <ChevronRight />
       </button>
 
-  
       <div className="relative z-10 h-full flex items-end px-55 pb-16 max-w-6xl">
         <div>
           <h1 className="text-[3rem] font-bold mb-2">
@@ -78,6 +77,7 @@ const Banner = ({ type }) => {
             <div className="bg-purple-700 text-white rounded-xl p-2">
               ⭐ {movie.vote_average?.toFixed(1)}
             </div>
+
             <p className="text-gray-400">
               {(movie.release_date || movie.first_air_date)?.split("-")[0]}
             </p>
@@ -88,14 +88,18 @@ const Banner = ({ type }) => {
           </p>
 
           <div className="flex gap-4">
-            <button className="bg-purple-600 px-6 py-2 rounded-md font-semibold">
+            <button
+              className="bg-purple-600 px-6 py-2 rounded-md font-semibold"
+              onClick={() => setPlayTrailer(true)}
+            >
               Watch Trailer
             </button>
+
             <Link to={`${movie.id}`}>
-            <button className="bg-gray-700/70 px-6 py-2 rounded-md">
-              More Info
-            </button></Link>
-            
+              <button className="bg-gray-700/70 px-6 py-2 rounded-md">
+                More Info
+              </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -105,11 +109,21 @@ const Banner = ({ type }) => {
           <div
             key={i}
             onClick={() => setIndex(i)}
-            className={`h-2 w-2 rounded-full cursor-pointer transition-all duration-300
-              ${i === index ? "bg-purple-500 w-5" : "bg-gray-400/50"}`}
+            className={`
+              h-2 w-2 rounded-full cursor-pointer
+              transition-all duration-300
+              ${i === index ? "bg-purple-500 w-5" : "bg-gray-400/50"}
+            `}
           />
         ))}
       </div>
+
+      <VideoplayerAlert
+        movie={movie}
+        play={playTrailer}
+        setPlay={setPlayTrailer}
+        type={type}
+      />
     </div>
   );
 };

@@ -1,15 +1,6 @@
 import React from "react";
 import MovieRow from "./MovieRow";
-
-
-const rows = [
-  { dir: "right", offset:-110 , shift: 0, scale: 1, rotate: -5, speed: 30 },
-  { dir: "left", offset: 140 , shift: 0, scale: 1, rotate: -5, speed: 30 },
-  { dir: "right", offset: 390 , shift: 0, scale: 1, rotate: -5, speed: 30 },
-  { dir: "left", offset: 640 , shift: 0, scale: 1, rotate: -5, speed: 30 },
-  { dir: "right", offset: 890 , shift: 0, scale: 1, rotate: -5, speed: 30 },
-
-];
+import { rows } from "../assets/constants";
 
 const BackgroundAnimation = ({ movies }) => {
   return (
@@ -28,7 +19,6 @@ const BackgroundAnimation = ({ movies }) => {
       ))}
 
       {/* Overlay for cinematic feel */}
-  
     </div>
   );
 };

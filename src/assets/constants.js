@@ -13,6 +13,96 @@ export const tabs = [
   { label: "Series", icon: Tv, path: "/BingeCat/series" },
 ];
 export const options = ["Streaming", "On TV", "For Rent", "In Theatres"];
-export const geners = [{id:28, name:"Action"}]
+export const geners = [{ id: 28, name: "Action" }];
 
 export const IMAGE_URL = "https://image.tmdb.org/t/p/original";
+export const genes = ["topRated", "nowPlaying", "popular", "upcoming"];
+export const those = [
+  {
+    title: "Discover",
+    subtitle: "Browse by genre",
+    icon: "🎬",
+  },
+  {
+    title: "Search",
+    subtitle: "Find any title",
+    icon: "🔍",
+  },
+  {
+    title: "TV Series",
+    subtitle: "Top rated shows",
+    icon: "📺",
+  },
+  {
+    title: "AI Picks",
+    subtitle: "Personalized for you",
+    icon: "✨",
+  },
+  {
+    title: "Watchlist",
+    subtitle: "Save for later",
+    icon: "🎟️",
+  },
+];
+export const rows = [
+  { dir: "right", offset: -110, shift: 0, scale: 1, rotate: -5, speed: 30 },
+  { dir: "left", offset: 140, shift: 0, scale: 1, rotate: -5, speed: 30 },
+  { dir: "right", offset: 390, shift: 0, scale: 1, rotate: -5, speed: 30 },
+  { dir: "left", offset: 640, shift: 0, scale: 1, rotate: -5, speed: 30 },
+  { dir: "right", offset: 890, shift: 0, scale: 1, rotate: -5, speed: 30 },
+];
+
+export const showmList = ["Everything", "Tv shows", "Movies"];
+export const availabilitiesList = [
+  "All availabilities",
+  "MediaStream",
+  "Free",
+  "Ads",
+  "Rent",
+  "Buy",
+];
+export const genres = [
+  "Action & Adventure",
+  "Animation",
+  "Comedy",
+  "Crime",
+  "Documentary",
+  "Drama",
+  "Family",
+  "Kids",
+  "Mystery",
+  "News",
+  "Reality",
+  "Sci-Fi & Fantasy",
+  "Soap",
+  "Talk",
+  "War & Politics",
+  "Western",
+];
+export const languages = [
+  { language: "English", code: 482 },
+  { language: "Spanish", code: 731 },
+  { language: "French", code: 264 },
+  { language: "German", code: 918 },
+  { language: "Italian", code: 547 },
+  { language: "Portuguese", code: 386 },
+  { language: "Russian", code: 629 },
+  { language: "Chinese", code: 145 },
+  { language: "Japanese", code: 873 },
+  { language: "Korean", code: 294 },
+  { language: "Hindi", code: 561 },
+  { language: "Telugu", code: 708 },
+  { language: "Tamil", code: 432 },
+  { language: "Malayalam", code: 956 },
+  { language: "Kannada", code: 317 },
+  { language: "Bengali", code: 684 },
+  { language: "Marathi", code: 253 },
+  { language: "Gujarati", code: 792 },
+  { language: "Punjabi", code: 468 },
+  { language: "Arabic", code: 905 },
+  { language: "Turkish", code: 341 },
+  { language: "Thai", code: 617 },
+  { language: "Vietnamese", code: 529 },
+  { language: "Indonesian", code: 884 },
+  { language: "Urdu", code: 176 },
+];
