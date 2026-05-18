@@ -17,8 +17,6 @@ const BackgroundAnimation = ({ movies }) => {
           speed={row.speed}
         />
       ))}
-
-      {/* Overlay for cinematic feel */}
     </div>
   );
 };

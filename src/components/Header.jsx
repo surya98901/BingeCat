@@ -80,42 +80,49 @@ const Header = () => {
             />
             <Search size={18} className="text-gray-400" />
           </div>
-          {navButtons.map((btn) => (
-            <Link to={btn.path} key={btn.label}>
-              <BingeCatButton
-                variant="ghost"
-                className="text-black dark:text-gray-400"
-              >
-                {btn.icon}
-                {btn.label === "Watchlist" && watchlist.length > 0 && (
-                  <span className="absolute bg-purple-700 text-white text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center font-semibold">
-                    {watchlist.length}
-                  </span>
-                )}
-              </BingeCatButton>
+          {user ? (
+            <Link to="/BingeCat/">
+              <BingeCatButton>Sign In</BingeCatButton>
             </Link>
-          ))}
-
-          {!user ? (
-            <div className="flex gap-2">
-              <BingeCatButton variant="ghost">Sign in</BingeCatButton>
-              <BingeCatButton variant="danger">Sign up</BingeCatButton>
-            </div>
           ) : (
-            <div className="flex gap-2">
-              <BingeCatButton
-                variant="ghost"
-                className="text-black dark:text-gray-400"
-              >
-                <Bell size={20} />
-              </BingeCatButton>
-              <BingeCatButton
-                variant="ghost"
-                className="text-black dark:text-gray-400"
-              >
-                <UserRound size={20} />
-              </BingeCatButton>
-            </div>
+            <>
+              <div className="flex gap-2 items-center">
+                {navButtons.map((btn) => (
+                  <Link to={btn.path} key={btn.label}>
+                    <BingeCatButton
+                      variant="ghost"
+                      className="text-black dark:text-gray-400 relative flex gap-1"
+                    >
+                      {btn.icon}
+
+                      <span>{btn.label}</span>
+
+                      {btn.label === "Watchlist" && watchlist.length > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-purple-700 text-white text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center font-semibold">
+                          {watchlist.length}
+                        </span>
+                      )}
+                    </BingeCatButton>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="flex gap-2">
+                <BingeCatButton
+                  variant="ghost"
+                  className="text-black dark:text-gray-400"
+                >
+                  <Bell size={20} />
+                </BingeCatButton>
+
+                <BingeCatButton
+                  variant="ghost"
+                  className="text-black dark:text-gray-400"
+                >
+                  <UserRound size={20} />
+                </BingeCatButton>
+              </div>
+            </>
           )}
           <BingeCatButton
             variant="ghost"

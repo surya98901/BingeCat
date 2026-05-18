@@ -10,7 +10,6 @@ const userSlice = createSlice({
 
   initialState,
   reducers: {
-    // User Authentication
     setUser: (state, action) => {
       state.currentUser = action.payload;
     },
@@ -20,7 +19,6 @@ const userSlice = createSlice({
       state.watchList = [];
     },
 
-    // Movie Watchlist
     addMovie: (state, action) => {
       const exists = state.watchList.some(
         (movie) => movie.id === action.payload.id,

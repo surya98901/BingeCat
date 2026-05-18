@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   showmList,
   availabilitiesList,
-  geners,
+  genres,
   languages,
 } from "../assets/constants";
 
