@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import BingeCatButton from "../ReUsables/BingeCatButton";
 import LogoTextTheme1 from "../svgs/LogoTextSVG";
 import { Link } from "react-router-dom";
-import SignUpPage from "./SignUppage";
+
 import { useState } from "react";
 
 const SignInPage = () => {

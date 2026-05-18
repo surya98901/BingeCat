@@ -3,6 +3,7 @@ import Banner from "./Banner";
 import { div } from "framer-motion/client";
 import { genes, those } from "../assets/constants";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Browse = ({ type }) => {
   const currUser = useSelector((state) => state.user.user);
@@ -19,7 +20,7 @@ const Browse = ({ type }) => {
           {those.map((item) => (
             <div
               key={item.title}
-              className="w-[300px] h-[80px] rounded-3xl flex items-center justify-center border border-purple-700 gap-4"
+              className="w-[250px] h-[80px] rounded-3xl flex items-center justify-center border border-purple-700 gap-4"
             >
               <div className="text-5xl group-hover:scale-110 transition-transform duration-300">
                 {item.icon}
@@ -41,9 +42,11 @@ const Browse = ({ type }) => {
             Let BingeCat recommendation engine find the perfect movie based on
             your mood, favorite genres, and viewing history.
           </p>
-          <div className="bg-purple-700 rounded-full w-[400px] h-[50px] text-white text-xl flex justify-center items-center">
-            Get Personalized Recommendations
-          </div>
+          <Link to={"/BingeCat/explore"}>
+            <div className="bg-purple-700 rounded-full w-[400px] h-[50px] text-white text-xl flex justify-center items-center">
+              Get Personalized Recommendations
+            </div>
+          </Link>
         </div>
       </div>
     </div>

@@ -1,5 +1,7 @@
 import { ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import { genes, those } from "../assets/constants";
+import MovieContainer from "./MovieContainer";
 import {
   showmList,
   availabilitiesList,
@@ -144,28 +146,13 @@ const Explorepage = () => {
             <p className="text-zinc-500 dark:text-zinc-400"> x / y Results</p>
           </div>
 
-          <div className="grid grid-cols-5 gap-6">
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-            <div className="h-[320px] rounded-2xl bg-zinc-200 dark:bg-zinc-800" />
-          </div>
+          {genes.map((gene) => (
+            <MovieContainer key={gene} gene={gene} type={"movie"} />
+          ))}
+          {genes.map((gene) => (
+            <MovieContainer key={gene} gene={gene} type={"series"} />
+          ))}
+
           <button className="mt-10 rounded-xl bg-purple-700 px-6 py-3 text-lg font-bold text-white shadow-lg transition hover:bg-purple-800">
             Load More
           </button>
