@@ -18,10 +18,21 @@ import { useNavigate, Link } from "react-router-dom";
 import SlideToSwitchPath from "../ReUsables/SlideToSwitchPath";
 import BingeCatButton from "../ReUsables/BingeCatButton";
 import { label } from "framer-motion/client";
+import { setType } from "../store/slices/typeSlice";
 
 const tabs = [
-  { label: "Movies", icon: <Film size={14} />, path: "/BingeCat/movies" },
-  { label: "Series", icon: <Tv size={14} />, path: "/BingeCat/series" },
+  {
+    label: "Movies",
+    icon: <Film size={14} />,
+    path: "/BingeCat/movies",
+    val: "movies",
+  },
+  {
+    label: "Series",
+    icon: <Tv size={14} />,
+    path: "/BingeCat/series",
+    val: "series",
+  },
 ];
 
 const navButtons = [
@@ -37,17 +48,22 @@ const navButtons = [
 const Header = () => {
   const theme = useSelector((state) => state.theme.theme);
   const user = useSelector((state) => state.user.user);
+  const type = useSelector((state) => state.type.currentType);
   const watchlist = useSelector((state) => state.user.watchList);
   const [active, setActive] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const loc = location.pathname.includes("movies") ? "movie" : "tv";
+  dispatch(setType(loc === "movie" ? "movies" : "series"));
 
   const handleTabClick = (index) => {
     setActive(index);
     navigate(tabs[index].path);
+    dispatch(setType(tabs[index].val));
   };
 
   useEffect(() => {
+    setActive(type === "movies" ? 0 : 1);
     setTheme(theme);
   }, [theme]);
 
@@ -57,7 +73,7 @@ const Header = () => {
         <div className="flex items-center w-[40%]">
           <div className="flex items-center w-full">
             <img src="public\applogo.png" alt="logo" className="w-[10%]" />
-            <Link to="/BingeCat/movies">
+            <Link to={`/BingeCat/${type}`}>
               <LogoTextTheme1 />
             </Link>
             <SlideToSwitchPath

@@ -1,17 +1,37 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import WatchPageCard from "./WatchPageCard";
 import { those } from "../assets/constants";
 import { Film } from "lucide-react";
 import BingeCatButton from "../ReUsables/BingeCatButton";
 import { Link } from "react-router-dom";
+import { clearWatchList } from "../store/slices/userSlice";
 
 const WatchListPage = () => {
   const watchlist = useSelector((state) => state.user.watchList);
+  const dispatch = useDispatch();
 
   return (
-    <div className="m-15 p-10 flex flex-col items-center justify-center gap-5">
+    <div className="m-15 p-10 flex flex-col gap-5">
       {watchlist.length ? (
-        watchlist.map((movie) => <WatchPageCard key={movie.id} movie={movie} />)
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between items-center ">
+            <h1 className="text-4xl font-bold text-zinc-900 dark:text-white">
+              My Watch List
+            </h1>
+            <button
+              className="border border-red-600 text-red-600 rounded-xl w-[100px] h-[30px]"
+              onClick={() => dispatch(clearWatchList())}
+            >
+              Clear all
+            </button>
+          </div>
+          <p className="text-l text-zinc-900 dark:text-zinc-400">
+            {watchlist.length} items saved
+          </p>
+          {watchlist.map((movie) => (
+            <WatchPageCard key={movie.id} movie={movie} />
+          ))}
+        </div>
       ) : (
         <div className="flex flex-col items-center justify-center g">
           <div className="flex flex-col items-center justify-center gap-5 m-20">

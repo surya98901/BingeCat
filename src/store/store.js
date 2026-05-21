@@ -2,10 +2,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice";
 import moviesReducer from "./slices/moviesSlice";
 import tvSeriesReducer from "./slices/tvSeriesSlice";
-// import searchReducer from "./searchSlice";
 import themeReducer from "./slices/themeSlice";
-import watchProviderReducer from "./slices/watchProviderslice"; 
-
+import watchProviderReducer from "./slices/watchProviderslice";
+import typeReducer from "./slices/typeSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +13,7 @@ const store = configureStore({
     tvSeries: tvSeriesReducer,
     watchProvider: watchProviderReducer,
     theme: themeReducer,
+    type: typeReducer,
   },
 });
 

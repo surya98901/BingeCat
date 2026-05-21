@@ -94,7 +94,7 @@ const MovieContainer = ({ gene, type }) => {
         {showLeft && (
           <button
             onClick={() => scroll("left")}
-            className="absolute left-0 top-0 bottom-0 z-10 w-12 flex items-center justify-center 
+            className="absolute -left-15 top-0 bottom-0 z-10 w-12 flex items-center justify-center 
                         dark:bg-gradient-to-r from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition"
           >
             <ChevronLeft
@@ -107,7 +107,7 @@ const MovieContainer = ({ gene, type }) => {
         {showRight && (
           <button
             onClick={() => scroll("right")}
-            className="absolute right-0 top-0 bottom-0 z-10 w-12 flex items-center justify-center 
+            className="absolute -right-15 top-0 bottom-0 z-10 w-12 flex items-center justify-center 
                         dark:bg-gradient-to-l from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition"
           >
             <ChevronRight

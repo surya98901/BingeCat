@@ -34,8 +34,6 @@ const userSlice = createSlice({
         (movie) => movie.id !== action.payload,
       );
     },
-
-    // Clear Lists
     clearWatchList: (state) => {
       state.watchList = [];
     },

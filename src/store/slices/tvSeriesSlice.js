@@ -9,6 +9,7 @@ const tvSeriesSlice = createSlice({
     upcomingSeries: null,
     gptSuggestedSeries: null,
     SeriesDetails: null,
+    recommendationSeriesDetails: null,
     trailer: null,
   },
   reducers: {
@@ -30,6 +31,9 @@ const tvSeriesSlice = createSlice({
     addSeriesDetails: (state, action) => {
       state.SeriesDetails = action.payload;
     },
+    addRecommendationSeriesDetails: (state, action) => {
+      state.recommendationSeriesDetails = action.payload;
+    },
     addGptSuggestedSeries: (state, action) => {
       state.gptSuggestedSeries = action.payload;
     },
@@ -42,6 +46,7 @@ export const {
   addTopRatedSeries,
   addUpcomingSeries,
   addSeriesDetails,
+  addRecommendationSeriesDetails,
   addGptSuggestedSeries,
 } = tvSeriesSlice.actions;
 export default tvSeriesSlice.reducer;

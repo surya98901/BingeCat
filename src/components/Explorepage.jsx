@@ -1,25 +1,103 @@
 import { ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
-import { useState } from "react";
-import { genes, those } from "../assets/constants";
-import MovieContainer from "./MovieContainer";
-import {
-  showmList,
-  availabilitiesList,
-  genres,
-  languages,
-} from "../assets/constants";
+import { motion } from "framer-motion";
+import { useState, useMemo } from "react";
+import MovieCard from "./MovieCard";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { genres, languages } from "../assets/constants";
 
 const Explorepage = () => {
   const [click, setClick] = useState(false);
+  const [activeId, setActiveId] = useState(null);
+  const [load, setLoad] = useState(15);
 
-  const filterClickHandler = () => {
-    setClick(!click);
+  const [showMe, setShowMe] = useState("Everything");
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [network, setNetwork] = useState("");
+  const [language, setLanguage] = useState("");
+  const type = useSelector((state) => state.type.currentType);
+
+  const {
+    popularMovies = [],
+    topRatedMovies = [],
+    upcomingMovies = [],
+    nowPlayingMovies = [],
+  } = useSelector((state) => state.movies);
+
+  const {
+    popularSeries = [],
+    topRatedSeries = [],
+    upcomingSeries = [],
+    nowPlayingSeries = [],
+  } = useSelector((state) => state.tvSeries);
+
+  const movieData = [
+    ...popularMovies,
+    ...topRatedMovies,
+    ...upcomingMovies,
+    ...nowPlayingMovies,
+  ];
+
+  const seriesData = [
+    ...popularSeries,
+    ...topRatedSeries,
+    ...upcomingSeries,
+    ...nowPlayingSeries,
+  ];
+
+  const allData = [...movieData, ...seriesData];
+
+  const toggleGenre = (genre) => {
+    setSelectedGenres((prev) =>
+      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre],
+    );
   };
+
+  const movies = useMemo(() => {
+    let data = allData;
+
+    if (showMe === "Movies") {
+      data = movieData;
+    }
+
+    if (showMe === "Tv Shows") {
+      data = seriesData;
+    }
+
+    if (selectedGenres.length) {
+      data = data.filter((item) =>
+        item.genre_names?.some((g) => selectedGenres.includes(g)),
+      );
+    }
+
+    if (network.trim()) {
+      data = data.filter((item) =>
+        item?.origin_country
+          ?.join("")
+          .toLowerCase()
+          .includes(network.toLowerCase()),
+      );
+    }
+
+    if (language) {
+      data = data.filter((item) => item.original_language === language);
+    }
+
+    return data;
+  }, [
+    showMe,
+    selectedGenres,
+    network,
+    language,
+    allData,
+    movieData,
+    seriesData,
+  ]);
 
   return (
     <div className="mt-15 flex w-full justify-center px-6 py-5">
       <div className="flex w-full max-w-[1600px] gap-8">
-        <div className="w-[20%] min-w-[280px] mt-5">
+        <div className="mt-5 w-[20%] min-w-[280px]">
           <h1 className="mb-6 text-4xl font-bold text-zinc-900 dark:text-white">
             Explore
           </h1>
@@ -41,7 +119,7 @@ const Explorepage = () => {
               }`}
             >
               <div
-                onClick={filterClickHandler}
+                onClick={() => setClick((prev) => !prev)}
                 className="flex h-10 cursor-pointer items-center justify-between px-5 text-lg font-bold"
               >
                 <p>Filters</p>
@@ -50,112 +128,117 @@ const Explorepage = () => {
               </div>
 
               {click && (
-                <div className="flex flex-col rounded-b-xl bg-white text-black border border-purple-700 ">
-                  <div className="border-b border-zinc-200 p-4 flex flex-col gap-1">
-                    Show Me
-                    {showmList.map((item) => (
-                      <label key={item} htmlFor={item} className="flex gap-3">
-                        <input type="checkbox" name={item} id={item} />
+                <div className="flex flex-col rounded-b-xl border border-purple-700 bg-[#ECECEC] text-black">
+                  <div className="flex flex-col gap-3 border-b border-zinc-300 p-5">
+                    <p className="font-bold">Show Me</p>
+
+                    {["Everything", "Tv Shows", "Movies"].map((item) => (
+                      <label
+                        key={item}
+                        className="flex cursor-pointer items-center gap-3"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={showMe === item}
+                          onChange={() => setShowMe(item)}
+                        />
                         {item}
                       </label>
                     ))}
                   </div>
-                  <div className="border-b border-zinc-200 p-4">
-                    Availabilities
-                    {availabilitiesList.map((item) => (
-                      <label key={item} htmlFor={item} className="flex gap-3">
-                        <input type="checkbox" name={item} id={item} />
-                        {item}
-                      </label>
-                    ))}
-                  </div>
-                  <div className="border-b border-zinc-200 p-4">
-                    Release Dates
-                    <label htmlFor="searchRelease" className="flex gap-3">
-                      <input
-                        type="checkbox"
-                        name="searchRelease"
-                        id="searchRelease"
-                      />
-                      searchRelease
-                    </label>
-                    <div className="flex flex-col gap-2 my-2">
-                      <div className="flex items-center gap-2">
-                        From
-                        <input
-                          type="text"
-                          placeholder=""
-                          className="border border-purple-700 rounded-full p-1"
-                        />
-                      </div>
-                      <div className="flex items-center gap-7">
-                        To
-                        <input
-                          type="text"
-                          placeholder=""
-                          className="border border-purple-700 rounded-full p-1"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="border-b border-zinc-200 p-4">
-                    Genres
-                    <div className="flex flex-wrap gap-2">
+
+                  <div className="border-b border-zinc-300 p-5">
+                    <p className="mb-4 font-bold">Genres</p>
+
+                    <div className="flex flex-wrap gap-3">
                       {genres.map((genre) => (
-                        <span
+                        <button
                           key={genre}
-                          className=" border border-purple-700 hover:bg-purple-700 hover:text-white px-3 py-1 rounded-full text-sm"
+                          onClick={() => toggleGenre(genre)}
+                          className={`rounded-full border px-4 py-1 text-sm transition ${
+                            selectedGenres.includes(genre)
+                              ? "border-purple-700 bg-purple-700 text-white"
+                              : "border-purple-700 text-black hover:bg-purple-700 hover:text-white"
+                          }`}
                         >
                           {genre}
-                        </span>
+                        </button>
                       ))}
                     </div>
                   </div>
-                  <div className="border-b border-zinc-200 p-4 flex flex-col gap-2">
-                    Network
+
+                  <div className="border-b border-zinc-300 p-5">
+                    <p className="mb-4 font-bold">Network</p>
+
                     <input
                       type="text"
+                      value={network}
+                      onChange={(e) => setNetwork(e.target.value)}
                       placeholder="e.g. Netflix"
-                      className="border border-purple-700 rounded-full p-1"
+                      className="w-full rounded-full border border-purple-700 bg-white px-4 py-3 outline-none"
                     />
                   </div>
-                  <select className="p-2 m-4">
-                    <option value="">Language</option>
-                    {languages.map((lang) => (
-                      <option key={lang.code} value={lang.code}>
-                        {lang.language} {`(${lang.code})`}
-                      </option>
-                    ))}
-                  </select>
+
+                  <div className="p-5">
+                    <select
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value)}
+                      className="w-full rounded-lg border border-zinc-400 bg-white p-3 outline-none"
+                    >
+                      <option value="">Language</option>
+
+                      {languages.map((lang) => (
+                        <option key={lang.code} value={lang.code}>
+                          {lang.language} ({lang.code})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               )}
             </div>
-
-            <button className="mt-4 rounded-xl bg-purple-700 px-5 py-3 text-lg font-bold text-white shadow-lg transition hover:bg-purple-800">
-              Apply Filters
-            </button>
           </div>
         </div>
 
-        <div className="flex w-[80%] flex-col mt-6">
+        <div className="mt-6 flex w-[80%] flex-col">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-3xl font-bold text-zinc-900 dark:text-white">
-              sort param
+              Results
             </h2>
 
-            <p className="text-zinc-500 dark:text-zinc-400"> x / y Results</p>
+            <p className="text-zinc-500 dark:text-zinc-400">
+              {movies.length} Results
+            </p>
           </div>
 
-          {genes.map((gene) => (
-            <MovieContainer key={gene} gene={gene} type={"movie"} />
-          ))}
-          {genes.map((gene) => (
-            <MovieContainer key={gene} gene={gene} type={"series"} />
-          ))}
+          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {movies.slice(0, load).map((movie) => (
+              <div
+                key={movie.id}
+                className="relative"
+                onMouseEnter={() => setActiveId(movie.id)}
+              >
+                <motion.div
+                  className="cursor-pointer"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Link to={`/BingeCat/${type}/${movie.id}`}>
+                    <MovieCard movie={movie} />
+                  </Link>
+                </motion.div>
+              </div>
+            ))}
+          </div>
 
-          <button className="mt-10 rounded-xl bg-purple-700 px-6 py-3 text-lg font-bold text-white shadow-lg transition hover:bg-purple-800">
-            Load More
-          </button>
+          {load < movies.length && (
+            <button
+              className="mt-10 w-[60%] self-center rounded-xl bg-purple-700 px-6 py-3 text-lg font-bold text-white shadow-lg transition hover:bg-purple-800"
+              onClick={() => setLoad((prev) => prev + 15)}
+            >
+              Load More
+            </button>
+          )}
         </div>
       </div>
     </div>

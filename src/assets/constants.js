@@ -106,3 +106,21 @@ export const languages = [
   { language: "Indonesian", code: 884 },
   { language: "Urdu", code: 176 },
 ];
+export const mood = [
+  "Happy",
+  "Dark",
+  "Emotional",
+  "Exciting",
+  "Relaxing",
+  "Theilling",
+];
+export const eras = [
+  "All Eras",
+  "Latest",
+  "2020s",
+  "2010s",
+  "2000s",
+  "90s",
+  "Classic",
+];
+export const ratings = ["Any Rating", "Good (6+)", "Top Rated (8+)"];
