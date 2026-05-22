@@ -22,26 +22,31 @@ export const those = [
     title: "Discover",
     subtitle: "Browse by genre",
     icon: "🎬",
+    path: "/Bingecat/explore",
   },
   {
     title: "Search",
     subtitle: "Find any title",
     icon: "🔍",
+    path: "/Bingecat/explore",
   },
   {
     title: "TV Series",
     subtitle: "Top rated shows",
     icon: "📺",
+    path: "/Bingecat/series",
   },
   {
     title: "AI Picks",
     subtitle: "Personalized for you",
     icon: "✨",
+    path: "/Bingecat/for-you",
   },
   {
     title: "Watchlist",
     subtitle: "Save for later",
     icon: "🎟️",
+    path: "/Bingecat/watchlist",
   },
 ];
 export const rows = [

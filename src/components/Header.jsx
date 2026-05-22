@@ -53,8 +53,6 @@ const Header = () => {
   const [active, setActive] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const loc = location.pathname.includes("movies") ? "movie" : "tv";
-  dispatch(setType(loc === "movie" ? "movies" : "series"));
 
   const handleTabClick = (index) => {
     setActive(index);
@@ -65,7 +63,7 @@ const Header = () => {
   useEffect(() => {
     setActive(type === "movies" ? 0 : 1);
     setTheme(theme);
-  }, [theme]);
+  }, [theme, type]);
 
   return (
     <div className="h-[8vh] mx-auto fixed top-0 left-0 right-0 w-[full] z-50">

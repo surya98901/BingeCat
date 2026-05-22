@@ -7,7 +7,7 @@ const CastContainer = ({ credits }) => {
   const [index, setIndex] = useState(0);
 
   const chunkSize = 5;
-  const cardWidth = 150 + 12; // width + gap (approx)
+  const cardWidth = 150 + 12;
   const cast = credits?.cast || [];
 
   const maxIndex = Math.ceil(cast.length / chunkSize) - 1;

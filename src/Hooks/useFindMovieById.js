@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { API_OPTIONS } from "../assets/constants";
 import { addMovieDetails } from "../store/slices/moviesSlice"; // fix path
-import {addSeriesDetails} from "../store/slices/tvSeriesSlice"
+import { addSeriesDetails } from "../store/slices/tvSeriesSlice";
 
 const useFindMovieById = (id, type) => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const useFindMovieById = (id, type) => {
     try {
       const response = await fetch(
         `https://api.themoviedb.org/3/${type}/${id}?language=en-US`,
-        API_OPTIONS
+        API_OPTIONS,
       );
       const data = await response.json();
 
@@ -20,7 +20,6 @@ const useFindMovieById = (id, type) => {
       } else {
         dispatch(addSeriesDetails(data));
       }
-
     } catch (error) {
       console.error("Error fetching details:", error);
     }
@@ -30,6 +29,6 @@ const useFindMovieById = (id, type) => {
     if (id) {
       getDetails();
     }
-  }, [id, type]); 
+  }, [id, type]);
 };
 export default useFindMovieById;

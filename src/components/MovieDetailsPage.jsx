@@ -37,8 +37,6 @@ const MovieDetailsPage = () => {
   const dispatch = useDispatch();
 
   const type = location.pathname.includes("movies") ? "movie" : "tv";
-  dispatch(setType(type === "movie" ? "movies" : "series"));
-
   useFindMovieById(id, type);
   useGetRecommendtaions(id, type);
 
