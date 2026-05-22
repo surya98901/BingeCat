@@ -14,10 +14,8 @@ const Explorepage = () => {
 
   const dispatch = useDispatch();
 
-  // Redux Type
   const type = useSelector((state) => state.type.currentType);
 
-  // Local State
   const [showMe, setShowMe] = useState(
     type === "movies" ? "Movies" : "Tv Shows",
   );
@@ -26,7 +24,6 @@ const Explorepage = () => {
   const [network, setNetwork] = useState("");
   const [language, setLanguage] = useState("");
 
-  // Redux Movie Data
   const {
     popularMovies = [],
     topRatedMovies = [],
@@ -34,7 +31,6 @@ const Explorepage = () => {
     nowPlayingMovies = [],
   } = useSelector((state) => state.movies);
 
-  // Redux TV Data
   const {
     popularSeries = [],
     topRatedSeries = [],
@@ -42,7 +38,6 @@ const Explorepage = () => {
     nowPlayingSeries = [],
   } = useSelector((state) => state.tvSeries);
 
-  // Combined Movie Array
   const movieData = [
     ...popularMovies,
     ...topRatedMovies,
@@ -50,7 +45,6 @@ const Explorepage = () => {
     ...nowPlayingMovies,
   ];
 
-  // Combined TV Array
   const seriesData = [
     ...popularSeries,
     ...topRatedSeries,
@@ -58,35 +52,29 @@ const Explorepage = () => {
     ...nowPlayingSeries,
   ];
 
-  // Genre Toggle
   const toggleGenre = (genre) => {
     setSelectedGenres((prev) =>
       prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre],
     );
   };
 
-  // Switch Between Movies & TV
   const switchTypes = (item) => {
     setShowMe(item);
 
     dispatch(setType(item === "Movies" ? "movies" : "series"));
 
-    // Optional UX improvement
     setLoad(15);
   };
 
-  // Filtered Data
   const movies = useMemo(() => {
     let data = showMe === "Movies" ? movieData : seriesData;
 
-    // Genre Filter
     if (selectedGenres.length) {
       data = data.filter((item) =>
         item.genre_names?.some((g) => selectedGenres.includes(g)),
       );
     }
 
-    // Network Filter
     if (network.trim()) {
       data = data.filter((item) =>
         item?.origin_country
@@ -96,12 +84,10 @@ const Explorepage = () => {
       );
     }
 
-    // Language Filter
     if (language) {
       data = data.filter((item) => item.original_language === language);
     }
 
-    // Remove Duplicate IDs
     return data.filter(
       (item, index, self) => index === self.findIndex((m) => m.id === item.id),
     );
@@ -110,32 +96,27 @@ const Explorepage = () => {
   return (
     <div className="mt-15 flex w-full justify-center px-6 py-5">
       <div className="flex w-full max-w-[1600px] gap-8">
-        {/* LEFT FILTER PANEL */}
         <div className="mt-5 w-[20%] min-w-[280px]">
           <h1 className="mb-6 text-4xl font-bold text-zinc-900 dark:text-white">
             Explore
           </h1>
 
           <div className="flex flex-col gap-1">
-            {/* SORT */}
             <div className="flex h-10 items-center justify-between rounded-xl bg-purple-700 px-5 text-lg font-bold text-white shadow-lg">
               <p>Sort</p>
               <ChevronRight size={20} />
             </div>
 
-            {/* WATCH */}
             <div className="flex h-10 items-center justify-between rounded-xl bg-purple-700 px-5 text-lg font-bold text-white shadow-lg">
               <p>Where to Watch</p>
               <ChevronRight size={20} />
             </div>
 
-            {/* FILTERS */}
             <div
               className={`overflow-hidden rounded-xl bg-purple-700 text-white shadow-lg transition-all duration-300 ${
                 click ? "rounded-b-none" : ""
               }`}
             >
-              {/* HEADER */}
               <div
                 onClick={() => setClick((prev) => !prev)}
                 className="flex h-10 cursor-pointer items-center justify-between px-5 text-lg font-bold"
@@ -145,10 +126,8 @@ const Explorepage = () => {
                 {!click ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
               </div>
 
-              {/* CONTENT */}
               {click && (
                 <div className="flex flex-col rounded-b-xl border border-purple-700 bg-[#ECECEC] text-black">
-                  {/* SHOW ME */}
                   <div className="flex flex-col gap-3 border-b border-zinc-300 p-5">
                     <p className="font-bold">Show Me</p>
 
@@ -169,7 +148,6 @@ const Explorepage = () => {
                     ))}
                   </div>
 
-                  {/* GENRES */}
                   <div className="border-b border-zinc-300 p-5">
                     <p className="mb-4 font-bold">Genres</p>
 
@@ -190,7 +168,6 @@ const Explorepage = () => {
                     </div>
                   </div>
 
-                  {/* NETWORK */}
                   <div className="border-b border-zinc-300 p-5">
                     <p className="mb-4 font-bold">Network</p>
 
@@ -203,7 +180,6 @@ const Explorepage = () => {
                     />
                   </div>
 
-                  {/* LANGUAGE */}
                   <div className="p-5">
                     <select
                       value={language}
@@ -225,7 +201,6 @@ const Explorepage = () => {
           </div>
         </div>
 
-        {/* RIGHT CONTENT */}
         <div className="mt-6 flex w-[80%] flex-col">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-3xl font-bold text-zinc-900 dark:text-white">
@@ -237,7 +212,6 @@ const Explorepage = () => {
             </p>
           </div>
 
-          {/* MOVIES GRID */}
           <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {movies.slice(0, load).map((movie) => (
               <div
