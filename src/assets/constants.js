@@ -22,39 +22,39 @@ export const those = [
     title: "Discover",
     subtitle: "Browse by genre",
     icon: "🎬",
-    path: "/Bingecat/explore",
+    path: "/BingeCat/explore",
   },
   {
     title: "Search",
     subtitle: "Find any title",
     icon: "🔍",
-    path: "/Bingecat/explore",
+    path: "/BingeCat/explore",
   },
   {
     title: "TV Series",
     subtitle: "Top rated shows",
     icon: "📺",
-    path: "/Bingecat/series",
+    path: "/BingeCat/series",
   },
   {
     title: "AI Picks",
     subtitle: "Personalized for you",
     icon: "✨",
-    path: "/Bingecat/for-you",
+    path: "/BingeCat/for-you",
   },
   {
     title: "Watchlist",
     subtitle: "Save for later",
     icon: "🎟️",
-    path: "/Bingecat/watchlist",
+    path: "/BingeCat/watchlist",
   },
 ];
 export const rows = [
-  { dir: "right", offset: -110, shift: 0, scale: 1, rotate: -5, speed: 30 },
-  { dir: "left", offset: 140, shift: 0, scale: 1, rotate: -5, speed: 30 },
-  { dir: "right", offset: 390, shift: 0, scale: 1, rotate: -5, speed: 30 },
-  { dir: "left", offset: 640, shift: 0, scale: 1, rotate: -5, speed: 30 },
-  { dir: "right", offset: 890, shift: 0, scale: 1, rotate: -5, speed: 30 },
+  { dir: "right", offset: -110, shift: 0, scale: 1, rotate: -5 },
+  { dir: "left", offset: 140, shift: 0, scale: 1, rotate: -5 },
+  { dir: "right", offset: 390, shift: 0, scale: 1, rotate: -5 },
+  { dir: "left", offset: 640, shift: 0, scale: 1, rotate: -5 },
+  { dir: "right", offset: 890, shift: 0, scale: 1, rotate: -5 },
 ];
 
 export const showmList = ["Everything", "Tv shows", "Movies"];

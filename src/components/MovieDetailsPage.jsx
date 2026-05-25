@@ -13,7 +13,7 @@ import useGetCredits from "../Hooks/useGetCredits";
 import useGetMediaById from "../Hooks/useGetMediaById";
 import useGetRecommendtaions from "../Hooks/useGetRecommendtaions";
 import MovieCard from "../components/MovieCard";
-import { addMovie } from "../store/slices/userSlice";
+import { addMovie, addTvShow } from "../store/slices/userSlice";
 import BingCatButton from "../ReUsables/BingeCatButton";
 import ReleaseDetails from "./ReleaseDetails";
 import SeriesDetails from "./SeriesDetails";
@@ -23,8 +23,10 @@ import MediaSection from "./MediaSection";
 import VideoplayerAlert from "./VideoplayerAlert";
 import MovieDetailsAlert from "./MovieDetailsAlert";
 import { setType } from "../store/slices/typeSlice";
+import BackgroundAnimation from "./BackgroundAnimation";
 
 const MovieDetailsPage = () => {
+  const Loadingmovies = useSelector((state) => state.movies?.nowPlayingMovies);
   const [play, setPlay] = useState(false);
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
@@ -53,16 +55,15 @@ const MovieDetailsPage = () => {
       : state.tvSeries.recommendationSeriesDetails,
   );
 
-  const watchlist = useSelector((state) => state.user.watchList);
+  const watchlist =
+    type === "movies"
+      ? useSelector((state) => state.user.movieWatchList) || []
+      : useSelector((state) => state.user.tvShowWatchList) || [];
 
   const isSaved = watchlist.some((item) => item.id === movie?.id);
 
   if (!movie || !credits || !media) {
-    return (
-      <div className="flex h-screen items-center justify-center text-3xl font-bold">
-        Loading...
-      </div>
-    );
+    return <BackgroundAnimation movies={Loadingmovies} speed={0.5} />;
   }
 
   return (
@@ -116,7 +117,11 @@ const MovieDetailsPage = () => {
                   className={`px-1.5 ${
                     isSaved ? "text-yellow-400" : "text-white"
                   }`}
-                  onClick={() => dispatch(addMovie(movie))}
+                  onClick={() => {
+                    dispatch(
+                      type == "movies" ? addMovie(movie) : addTvShow(movie),
+                    );
+                  }}
                 >
                   <Bookmark />
                 </BingCatButton>

@@ -4,13 +4,16 @@ import BingeCatButton from "../ReUsables/BingeCatButton";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addMovie } from "../store/slices/userSlice";
+import { addMovie, addTvShow } from "../store/slices/userSlice";
 
 const MovieDetailsAlert = ({ movie }) => {
   const dispatch = useDispatch();
 
-  const watchlist = useSelector((state) => state.user.watchList);
   const type = useSelector((state) => state.type.currentType);
+  const watchlist =
+    type === "movies"
+      ? useSelector((state) => state.user.movieWatchList) || []
+      : useSelector((state) => state.user.tvShowWatchList) || [];
   const isSaved = watchlist.some((item) => item.id === movie.id);
 
   return (
@@ -45,7 +48,7 @@ const MovieDetailsAlert = ({ movie }) => {
             variant="ghost"
             className={`px-1.5 ${isSaved ? "text-yellow-400" : "text-white"}`}
             onClick={() => {
-              dispatch(addMovie(movie));
+              dispatch(type == "movies" ? addMovie(movie) : addTvShow(movie));
             }}
           >
             <Bookmark size={16} fill={isSaved ? "currentColor" : "none"} />

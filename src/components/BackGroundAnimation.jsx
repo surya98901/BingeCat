@@ -2,7 +2,7 @@ import React from "react";
 import MovieRow from "./MovieRow";
 import { rows } from "../assets/constants";
 
-const BackgroundAnimation = ({ movies }) => {
+const BackgroundAnimation = ({ movies, speed }) => {
   return (
     <div className="inset-0 -z-10 dark:bg-none overflow-hidden">
       {rows.map((row, i) => (
@@ -14,7 +14,7 @@ const BackgroundAnimation = ({ movies }) => {
           shift={row.shift}
           scale={row.scale}
           rotate={row.rotate}
-          speed={row.speed}
+          speed={speed || row.speed}
         />
       ))}
     </div>

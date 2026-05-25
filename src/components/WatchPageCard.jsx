@@ -2,10 +2,11 @@ import { IMAGE_URL } from "../assets/constants";
 import { Bookmark, Heart, Star, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { addMovie, removeMovie } from "../store/slices/userSlice";
+import { Link } from "react-router-dom";
+import BingeCatButton from "../ReUsables/BingeCatButton";
 
-const WatchPageCard = ({ movie }) => {
+const WatchPageCard = ({ movie, type }) => {
   const dispatch = useDispatch();
-
   const isSaved = useSelector((state) =>
     state.user.watchlist?.some((m) => m.id === movie?.id),
   );
@@ -46,22 +47,27 @@ const WatchPageCard = ({ movie }) => {
         </div>
 
         <div className="space-y-4">
-          <div>
-            <h1 className="line-clamp-1 text-3xl font-black tracking-tight text-zinc-900 dark:text-white">
-              {movie.title || movie.name}
+          <div className="flex items-center justify-between pr-5 gap-3">
+            <div>
+              <h1 className="line-clamp-1 text-3xl font-black tracking-tight text-zinc-900 dark:text-white">
+                {movie.title || movie.name}
 
-              <span className="ml-3 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                {(movie.release_date || movie.first_air_date)?.split("-")[0]}
-              </span>
-            </h1>
+                <span className="ml-3 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                  {(movie.release_date || movie.first_air_date)?.split("-")[0]}
+                </span>
+              </h1>
 
-            <div className="mt-2 h-[3px] w-24 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
+              <div className="mt-2 h-[3px] w-24 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
+            </div>
+            <Link to={`/BingeCat/${type}/${movie.id}`}>
+              <BingeCatButton variant="primary">Details</BingeCatButton>
+            </Link>
           </div>
 
           <p className="line-clamp-4 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300">
             <span className="font-semibold text-purple-500 dark:text-purple-400">
-              Overview:
-            </span>{" "}
+              {"Overview: "}
+            </span>
             {movie.overview}
           </p>
         </div>

@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentUser: null,
-  watchList: [],
+  movieWatchList: [],
+  tvShowWatchList: [],
 };
 
 const userSlice = createSlice({
@@ -16,26 +17,44 @@ const userSlice = createSlice({
 
     clearUser: (state) => {
       state.currentUser = null;
-      state.watchList = [];
+      state.movieWatchList = [];
+      state.tvShowWatchList = [];
     },
 
     addMovie: (state, action) => {
-      const exists = state.watchList.some(
+      const exists = state.movieWatchList.some(
         (movie) => movie.id === action.payload.id,
       );
 
       if (!exists) {
-        state.watchList.push(action.payload);
+        state.movieWatchList.push(action.payload);
       }
     },
-
     removeMovie: (state, action) => {
-      state.watchList = state.watchList.filter(
+      state.movieWatchList = state.movieWatchList.filter(
         (movie) => movie.id !== action.payload,
       );
     },
-    clearWatchList: (state) => {
-      state.watchList = [];
+    clearMovieWatchList: (state) => {
+      state.movieWatchList = [];
+    },
+
+    addTvShow: (state, action) => {
+      const exists = state.tvShowWatchList.some(
+        (tvShow) => tvShow.id === action.payload.id,
+      );
+
+      if (!exists) {
+        state.tvShowWatchList.push(action.payload);
+      }
+    },
+    removeTvShow: (state, action) => {
+      state.tvShowWatchList = state.tvShowWatchList.filter(
+        (tvShow) => tvShow.id !== action.payload,
+      );
+    },
+    clearTvShowWatchList: (state) => {
+      state.tvShowWatchList = [];
     },
   },
 });
@@ -46,7 +65,10 @@ export const {
 
   addMovie,
   removeMovie,
-  clearWatchList,
+  clearMovieWatchList,
+  addTvShow,
+  removeTvShow,
+  clearTvShowWatchList,
 } = userSlice.actions;
 
 export default userSlice.reducer;

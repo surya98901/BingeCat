@@ -47,9 +47,12 @@ const navButtons = [
 
 const Header = () => {
   const theme = useSelector((state) => state.theme.theme);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.currentUser);
   const type = useSelector((state) => state.type.currentType);
-  const watchlist = useSelector((state) => state.user.watchList);
+  const moviewatchlist =
+    useSelector((state) => state.user.movieWatchList) || [];
+  const tvshowwatchlist =
+    useSelector((state) => state.user.tvShowWatchList) || [];
   const [active, setActive] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -111,11 +114,12 @@ const Header = () => {
 
                       <span>{btn.label}</span>
 
-                      {btn.label === "Watchlist" && watchlist.length > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-purple-700 text-white text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center font-semibold">
-                          {watchlist.length}
-                        </span>
-                      )}
+                      {btn.label === "Watchlist" &&
+                        moviewatchlist.length + tvshowwatchlist.length > 0 && (
+                          <span className="absolute -top-1 -right-1 bg-purple-700 text-white text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center font-semibold">
+                            {moviewatchlist.length + tvshowwatchlist.length}
+                          </span>
+                        )}
                     </BingeCatButton>
                   </Link>
                 ))}
