@@ -17,8 +17,24 @@ const VideoplayerAlert = ({ movie, play, setPlay, type }) => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-      <div className="w-[70%] h-[80%] rounded-3xl overflow-hidden border border-purple-700/40 bg-gradient-to-br from-zinc-900 via-black to-zinc-950 shadow-[0_0_40px_rgba(168,85,247,0.25)]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm overflow-hidden pt-10">
+      <img
+        src="public/pawlogo.png"
+        alt="BingeCat Logo"
+        className="absolute top-[8%] left-[25%] w-30 opacity-90 z-50 drop-shadow-[0_0_40px_rgba(168,85,247,0.45)]  "
+      />
+      <img
+        src="public/applogo.png"
+        alt="BingeCat Logo"
+        className="absolute top-[0%] w-52 opacity-90 z-0 drop-shadow-[0_0_40px_rgba(168,85,247,0.45)] "
+      />
+      <img
+        src="public/pawlogo.png"
+        alt="BingeCat Logo"
+        className="absolute top-[8%] right-[25%] w-30 opacity-90 z-50 drop-shadow-[0_0_40px_rgba(168,85,247,0.45)] "
+      />
+
+      <div className="relative z-10 w-[70%] h-[80%] rounded-3xl overflow-hidden border border-purple-700/40 bg-gradient-to-br from-zinc-900 via-black to-zinc-950 shadow-[0_0_40px_rgba(168,85,247,0.25)]">
         <div className="flex items-center justify-between px-5 py-4 border-b border-purple-700/20 bg-zinc-900/80 backdrop-blur-md">
           <div>
             <h1 className="text-white text-2xl font-semibold tracking-tight">
