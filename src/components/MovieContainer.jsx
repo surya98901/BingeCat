@@ -50,7 +50,7 @@ const MovieContainer = ({ gene, type }) => {
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
   const [activeId, setActiveId] = useState(null);
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(options[0]);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   const checkScroll = () => {
@@ -82,7 +82,7 @@ const MovieContainer = ({ gene, type }) => {
       className="px-4 sm:px-12 md:px-24 lg:px-32 xl:px-48 dark:bg-black py-5"
       onMouseLeave={() => setActiveId(null)}
     >
-      <div className="flex flex-col sm:flex-row px-5 items-start sm:items-center gap-4 sm:gap-10 mb-4">
+      <div className="flex flex-col sm:flex-row px-3 sm:px-5 items-start sm:items-center gap-4 sm:gap-10 mb-4">
         <h1 className="text-lg font-semibold dark:text-white capitalize">
           {gene}
         </h1>
@@ -97,6 +97,7 @@ const MovieContainer = ({ gene, type }) => {
         {showLeft && (
           <button
             onClick={() => scroll("left")}
+            aria-label="Scroll left"
             className="hidden md:flex absolute -left-12 lg:-left-16 top-0 bottom-0 z-10 w-12 items-center justify-center 
                         dark:bg-gradient-to-r from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition"
           >
@@ -110,6 +111,7 @@ const MovieContainer = ({ gene, type }) => {
         {showRight && (
           <button
             onClick={() => scroll("right")}
+            aria-label="Scroll right"
             className="hidden md:flex absolute -right-12 lg:-right-16 top-0 bottom-0 z-10 w-12 items-center justify-center 
                         dark:bg-gradient-to-l from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition"
           >
@@ -123,7 +125,7 @@ const MovieContainer = ({ gene, type }) => {
         <div
           ref={scrollRef}
           onScroll={checkScroll}
-          className="flex gap-4 overflow-x-scroll overflow-y-visible py-10 px-6 scroll-smooth no-scrollbar"
+          className="flex gap-2 sm:gap-4 overflow-x-scroll overflow-y-visible py-6 sm:py-10 px-3 sm:px-6 scroll-smooth no-scrollbar"
         >
           <LayoutGroup>
             {movies.map((movie) => (

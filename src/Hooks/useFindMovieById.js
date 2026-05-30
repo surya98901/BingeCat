@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { API_OPTIONS } from "../assets/constants";
-import { addMovieDetails } from "../store/slices/moviesSlice"; // fix path
+import { addMovieDetails } from "../store/slices/moviesSlice"; 
 import { addSeriesDetails } from "../store/slices/tvSeriesSlice";
 
 const useFindMovieById = (id, type) => {

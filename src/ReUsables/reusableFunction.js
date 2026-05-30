@@ -10,7 +10,7 @@ export const handleMouseLeave = (hoverTimeout, setSelectedMovie) => {
 
     hoverTimeout.current = setTimeout(() => {
         setSelectedMovie(null);
-    }, 80); // 🔥 reduced from 200 → 80
+    }, 80); 
 };
 
 export const formatMoney = (num) => {

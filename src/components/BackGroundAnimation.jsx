@@ -3,6 +3,9 @@ import MovieRow from "./MovieRow";
 import { rows } from "../assets/constants";
 
 const BackgroundAnimation = ({ movies, speed }) => {
+  if (!movies || !Array.isArray(movies) || movies.length === 0) {
+    return null;
+  }
   return (
     <div className="inset-0 -z-10 dark:bg-none overflow-hidden">
       {rows.map((row, i) => (

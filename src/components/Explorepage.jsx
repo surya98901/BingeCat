@@ -7,6 +7,25 @@ import { Link } from "react-router-dom";
 import { genres, languages } from "../assets/constants";
 import { setType } from "../store/slices/typeSlice";
 
+const GENRE_MAP = {
+  "Action & Adventure": [10759, 28, 12],
+  "Animation": [16],
+  "Comedy": [35],
+  "Crime": [80],
+  "Documentary": [99],
+  "Drama": [18],
+  "Family": [10751],
+  "Kids": [10762],
+  "Mystery": [9648],
+  "News": [10763],
+  "Reality": [10764],
+  "Sci-Fi & Fantasy": [10765, 878, 14],
+  "Soap": [10766],
+  "Talk": [10767],
+  "War & Politics": [10768, 10752],
+  "Western": [37]
+};
+
 const Explorepage = () => {
   const [click, setClick] = useState(false);
   const [activeId, setActiveId] = useState(null);
@@ -70,9 +89,15 @@ const Explorepage = () => {
     let data = showMe === "Movies" ? movieData : seriesData;
 
     if (selectedGenres.length) {
-      data = data.filter((item) =>
-        item.genre_names?.some((g) => selectedGenres.includes(g)),
-      );
+      data = data.filter((item) => {
+        if (!item.genre_ids) return false;
+        return item.genre_ids.some((id) =>
+          selectedGenres.some((genreName) => {
+            const mappedIds = GENRE_MAP[genreName];
+            return mappedIds && mappedIds.includes(id);
+          })
+        );
+      });
     }
 
     if (network.trim()) {
@@ -94,7 +119,7 @@ const Explorepage = () => {
   }, [showMe, selectedGenres, network, language, movieData, seriesData]);
 
   return (
-    <div className="mt-20 sm:mt-24 flex w-full justify-center px-6 py-5">
+    <div className="mt-20 sm:mt-15 flex w-full justify-center px-4 sm:px-6 py-5">
       <div className="flex flex-col md:flex-row w-full max-w-[1600px] gap-8">
         <div className="mt-5 w-full md:w-[25%] lg:w-[20%] min-w-0 md:min-w-[280px]">
           <h1 className="mb-6 text-4xl font-bold text-zinc-900 dark:text-white">
@@ -102,32 +127,34 @@ const Explorepage = () => {
           </h1>
 
           <div className="flex flex-col gap-1">
-            <div className="flex h-10 items-center justify-between rounded-xl bg-purple-700 px-5 text-lg font-bold text-white shadow-lg">
-              <p>Sort</p>
+            <button className="flex h-10 w-full items-center justify-between rounded-xl bg-purple-700 px-5 text-lg font-bold text-white shadow-lg text-left focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none">
+              <span>Sort</span>
               <ChevronRight size={20} />
-            </div>
+            </button>
 
-            <div className="flex h-10 items-center justify-between rounded-xl bg-purple-700 px-5 text-lg font-bold text-white shadow-lg">
-              <p>Where to Watch</p>
+            <button className="flex h-10 w-full items-center justify-between rounded-xl bg-purple-700 px-5 text-lg font-bold text-white shadow-lg text-left focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none">
+              <span>Where to Watch</span>
               <ChevronRight size={20} />
-            </div>
+            </button>
 
             <div
               className={`overflow-hidden rounded-xl bg-purple-700 text-white shadow-lg transition-all duration-300 ${
                 click ? "rounded-b-none" : ""
               }`}
             >
-              <div
+              <button
                 onClick={() => setClick((prev) => !prev)}
-                className="flex h-10 cursor-pointer items-center justify-between px-5 text-lg font-bold"
+                aria-expanded={click}
+                aria-controls="explore-filters-panel"
+                className="flex h-10 w-full cursor-pointer items-center justify-between px-5 text-lg font-bold text-left focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none"
               >
-                <p>Filters</p>
+                <span>Filters</span>
 
                 {!click ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
-              </div>
+              </button>
 
               {click && (
-                <div className="flex flex-col rounded-b-xl border border-purple-700 bg-[#ECECEC] text-black">
+                <div id="explore-filters-panel" className="flex flex-col rounded-b-xl border border-purple-700 bg-[#ECECEC] text-black">
                   <div className="flex flex-col gap-3 border-b border-zinc-300 p-5">
                     <p className="font-bold">Show Me</p>
 
@@ -176,6 +203,7 @@ const Explorepage = () => {
                       value={network}
                       onChange={(e) => setNetwork(e.target.value)}
                       placeholder="e.g. US"
+                      aria-label="Network"
                       className="w-full rounded-full border border-purple-700 bg-white px-4 py-3 outline-none"
                     />
                   </div>
@@ -184,6 +212,7 @@ const Explorepage = () => {
                     <select
                       value={language}
                       onChange={(e) => setLanguage(e.target.value)}
+                      aria-label="Select Language"
                       className="w-full rounded-lg border border-zinc-400 bg-white p-3 outline-none"
                     >
                       <option value="">Language</option>
@@ -201,7 +230,7 @@ const Explorepage = () => {
           </div>
         </div>
 
-        <div className="mt-6 flex w-full md:w-[75%] lg:w-[80%] flex-col">
+        <div className="mt-6 flex w-full md:flex-1 flex-col min-w-0">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-3xl font-bold text-zinc-900 dark:text-white">
               Explore : {showMe}
@@ -212,19 +241,19 @@ const Explorepage = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="grid grid-cols-4 gap-2 sm:gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {movies.slice(0, load).map((movie) => (
               <div
                 key={movie.id}
-                className="relative"
+                className="relative w-full"
                 onMouseEnter={() => setActiveId(movie.id)}
               >
                 <motion.div
-                  className="cursor-pointer"
+                  className="cursor-pointer w-full"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Link to={`/BingeCat/${type}/${movie.id}`}>
+                  <Link to={`/BingeCat/${type}/${movie.id}`} className="block w-full">
                     <MovieCard movie={movie} className="w-full" />
                   </Link>
                 </motion.div>
@@ -232,7 +261,7 @@ const Explorepage = () => {
             ))}
           </div>
 
-          {/* LOAD MORE */}
+          {}
           {load < movies.length && (
             <button
               className="mt-10 w-full max-w-[320px] self-center rounded-xl bg-purple-700 px-6 py-3 text-lg font-bold text-white shadow-lg transition hover:bg-purple-800"

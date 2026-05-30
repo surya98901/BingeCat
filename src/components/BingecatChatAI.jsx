@@ -148,7 +148,7 @@ const BingecatChatAI = () => {
           </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-5 space-y-5 no-scrollbar bg-zinc-50 dark:bg-black">
-            {/* AI Welcome */}
+            {}
             <div className="flex gap-3 items-start">
               <div className="bg-gradient-to-br from-purple-500 to-purple-700 p-2 rounded-full shadow-lg shadow-purple-900/40 flex-shrink-0">
                 <Sparkles size={14} className="text-white" />
@@ -177,7 +177,7 @@ const BingecatChatAI = () => {
               </motion.div>
             </div>
 
-            {/* User Messages */}
+            {}
             {chatList.map((message, index) => (
               <motion.div
                 key={index}

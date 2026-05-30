@@ -9,5 +9,5 @@ export const setTheme = (theme) => {
 };
 
 export const getTheme = () => {
-  return localStorage.getItem("theme") || "light";
+  return localStorage.getItem("theme") || "dark";
 };

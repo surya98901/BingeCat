@@ -21,6 +21,7 @@ import SlideToSwitchPath from "../ReUsables/SlideToSwitchPath";
 import BingeCatButton from "../ReUsables/BingeCatButton";
 import { motion, AnimatePresence } from "framer-motion";
 import { setType } from "../store/slices/typeSlice";
+import { clearUser } from "../store/slices/userSlice";
 
 const tabs = [
   {
@@ -73,7 +74,7 @@ const Header = () => {
   }, [theme, type]);
 
   return (
-    <div className="h-[8vh] min-h-[60px] fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-white dark:bg-black px-2 sm:px-6 md:px-24 text-white">
+    <header className="h-[8vh] min-h-[60px] fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-white dark:bg-black px-2 sm:px-6 md:px-24 text-white" role="banner">
       <div className="flex flex-1 min-w-0 items-center">
         <div className="flex items-center gap-2 min-w-0">
           <img src={`${import.meta.env.BASE_URL}applogo.png`} alt="logo" className="w-[60px]" />
@@ -99,20 +100,21 @@ const Header = () => {
           <input
             type="text"
             placeholder="Search movies..."
+            aria-label="Search movies"
             className="bg-transparent w-full text-sm placeholder-gray-400 
                             focus:outline-none focus:ring-0 border-none p-2"
           />
           <Search size={18} className="text-gray-400" />
         </div>
-        {user ? (
+        {!user ? (
           <Link to="/BingeCat/">
             <BingeCatButton>Sign In</BingeCatButton>
           </Link>
         ) : (
           <>
-            <div className="flex gap-2 items-center hidden md:flex">
+            <nav aria-label="Desktop Navigation" className="flex gap-2 items-center hidden md:flex">
               {navButtons.map((btn) => (
-                <Link to={btn.path} key={btn.label}>
+                <Link to={btn.path} key={btn.label} aria-label={btn.label}>
                   <BingeCatButton
                     variant="ghost"
                     className="text-black dark:text-gray-400 relative flex gap-1"
@@ -130,12 +132,13 @@ const Header = () => {
                   </BingeCatButton>
                 </Link>
               ))}
-            </div>
+            </nav>
 
             <div className="flex gap-2 hidden sm:flex items-center">
               <BingeCatButton
                 variant="ghost"
                 className="text-black dark:text-gray-400"
+                aria-label="Notifications"
               >
                 <Bell size={20} />
               </BingeCatButton>
@@ -143,6 +146,12 @@ const Header = () => {
               <BingeCatButton
                 variant="ghost"
                 className="text-black dark:text-gray-400"
+                onClick={() => {
+                  dispatch(clearUser());
+                  navigate("/BingeCat/");
+                }}
+                title="Sign Out"
+                aria-label="Sign Out"
               >
                 <UserRound size={20} />
               </BingeCatButton>
@@ -153,28 +162,33 @@ const Header = () => {
           variant="ghost"
           className="text-black dark:text-gray-400 rounded-full  hidden sm:flex"
           onClick={() => dispatch(ToggleTheme())}
+          aria-label="Toggle Theme"
         >
           <SunMoon size={25} />
         </BingeCatButton>
       </div>
       
-      {/* Mobile Actions (Search + Menu) */}
+      {}
       <div className="flex items-center gap-1 sm:hidden">
         <button
           onClick={() => setShowMobileSearch((prev) => !prev)}
+          aria-label="Toggle mobile search"
+          aria-expanded={showMobileSearch}
           className="text-black dark:text-gray-400 rounded-full p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
         >
           <Search size={22} />
         </button>
         <button 
           onClick={() => setMenuOpen(true)}
+          aria-label="Open navigation menu"
+          aria-expanded={menuOpen}
           className="text-black dark:text-gray-400 rounded-full p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
         >
           <Menu />
         </button>
       </div>
 
-      {/* Mobile Slide-down Search Area */}
+      {}
       <AnimatePresence>
         {showMobileSearch && (
           <motion.div
@@ -188,6 +202,7 @@ const Header = () => {
               <input
                 type="text"
                 placeholder="Search movies..."
+                aria-label="Search movies"
                 className="bg-transparent w-full text-sm placeholder-zinc-400 focus:outline-none text-black dark:text-white p-1"
                 autoFocus
               />
@@ -197,24 +212,28 @@ const Header = () => {
         )}
       </AnimatePresence>
 
-      {/* Mobile Drawer */}
+      {}
       <AnimatePresence>
         {menuOpen && (
           <>
-            {/* Drawer Backdrop */}
+            {}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMenuOpen(false)}
+              aria-hidden="true"
               className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm sm:hidden"
             />
-            {/* Slide-out Menu */}
+            {}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", bounce: 0.05, duration: 0.35 }}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation Menu"
               className="fixed right-0 top-0 bottom-0 z-[110] w-[80vw] max-w-[320px] bg-white dark:bg-zinc-950 p-6 shadow-2xl flex flex-col gap-6 sm:hidden border-l border-zinc-200 dark:border-zinc-800"
             >
               <div className="flex items-center justify-between text-black dark:text-white">
@@ -227,11 +246,13 @@ const Header = () => {
                     variant="ghost"
                     className="text-black dark:text-gray-400 rounded-full"
                     onClick={() => dispatch(ToggleTheme())}
+                    aria-label="Toggle Theme"
                   >
                     <SunMoon size={20} />
                   </BingeCatButton>
                   <button
                     onClick={() => setMenuOpen(false)}
+                    aria-label="Close navigation menu"
                     className="p-2 rounded-full text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   >
                     <X size={20} />
@@ -239,8 +260,8 @@ const Header = () => {
                 </div>
               </div>
 
-              {/* Mobile Categories Tabs */}
-              <div className="flex flex-col gap-2">
+              {}
+              <nav className="flex flex-col gap-2" aria-label="Mobile Categories">
                 <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">Categories</label>
                 <div className="flex w-full justify-center">
                   <SlideToSwitchPath
@@ -252,10 +273,10 @@ const Header = () => {
                     }}
                   />
                 </div>
-              </div>
+              </nav>
 
-              {/* Mobile Navigation Links */}
-              <div className="flex flex-col gap-2">
+              {}
+              <nav className="flex flex-col gap-2" aria-label="Mobile Navigation">
                 <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">Navigation</label>
                 <div className="flex flex-col gap-2">
                   {navButtons.map((btn) => (
@@ -264,6 +285,7 @@ const Header = () => {
                       key={btn.label}
                       onClick={() => setMenuOpen(false)}
                       className="w-full"
+                      aria-label={btn.label}
                     >
                       <BingeCatButton
                         variant="ghost"
@@ -281,12 +303,38 @@ const Header = () => {
                     </Link>
                   ))}
                 </div>
+              </nav>
+
+              {}
+              <div className="mt-auto pt-6 border-t border-zinc-200 dark:border-zinc-800">
+                {!user ? (
+                  <Link
+                    to="/BingeCat/"
+                    onClick={() => setMenuOpen(false)}
+                    className="w-full block"
+                  >
+                    <BingeCatButton className="w-full py-3 justify-center">
+                      Sign In
+                    </BingeCatButton>
+                  </Link>
+                ) : (
+                  <BingeCatButton
+                    onClick={() => {
+                      dispatch(clearUser());
+                      setMenuOpen(false);
+                      navigate("/BingeCat/");
+                    }}
+                    className="w-full py-3 justify-center bg-red-600 hover:bg-red-700 text-white shadow-lg border-none"
+                  >
+                    Sign Out
+                  </BingeCatButton>
+                )}
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
-    </div>
+    </header>
   );
 };
 

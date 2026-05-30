@@ -17,7 +17,7 @@ const useGetCredits = (id,type) => {
   };
 
   useEffect(() => {
-    getDetails(id); // <-- you provide the id here
+    getDetails(id); 
   }, [id, type]);
   return credits;
 };

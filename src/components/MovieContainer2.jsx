@@ -11,7 +11,7 @@ const MovieContaier2 = ({ movies }) => {
   const [showRight, setShowRight] = useState(true);
   const [activeId, setActiveId] = useState(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
-  const currentType = useSelector((state) => state.type.currentType); // "movies" or "series"
+  const currentType = useSelector((state) => state.type.currentType); 
 
   const scrollRef = useRef(null);
 
@@ -48,6 +48,7 @@ const MovieContaier2 = ({ movies }) => {
       {showLeft && (
         <button
           onClick={() => scroll("left")}
+          aria-label="Scroll left"
           className="hidden md:flex absolute bottom-0 -left-12 top-0 z-10 w-12 items-center justify-center opacity-0 transition group-hover:opacity-100 dark:bg-gradient-to-r dark:from-black/70 dark:to-transparent"
         >
           <ChevronLeft
@@ -60,6 +61,7 @@ const MovieContaier2 = ({ movies }) => {
       {showRight && (
         <button
           onClick={() => scroll("right")}
+          aria-label="Scroll right"
           className="hidden md:flex absolute bottom-0 -right-12 top-0 z-10 w-12 items-center justify-center opacity-0 transition group-hover:opacity-100 dark:bg-gradient-to-l dark:from-black/70 dark:to-transparent"
         >
           <ChevronRight
@@ -72,7 +74,7 @@ const MovieContaier2 = ({ movies }) => {
       <div
         ref={scrollRef}
         onScroll={checkScroll}
-        className="no-scrollbar flex gap-4 overflow-x-scroll overflow-y-visible scroll-smooth px-6 py-10"
+        className="no-scrollbar flex gap-2 sm:gap-4 overflow-x-scroll overflow-y-visible scroll-smooth px-3 sm:px-6 py-6 sm:py-10"
       >
         <LayoutGroup>
           {movies.map((movie) => (

@@ -6,7 +6,7 @@ export default function PawCursor() {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
-    // Only hide custom cursor on devices that do not support hover (mobile/tablet)
+    
     const hoverMediaQuery = window.matchMedia("(hover: none)");
     setIsTouchDevice(hoverMediaQuery.matches);
 
@@ -24,11 +24,11 @@ export default function PawCursor() {
     <motion.img
       src={`${import.meta.env.BASE_URL}pawpointer.png`} 
       alt="cursor"
-      animate={{ x: pos.x - 25, y: pos.y - 5 }} // Center horizontally (-25px), point with the top toe bean (-5px)
+      animate={{ x: pos.x - 25, y: pos.y - 5 }} 
       transition={
         {
           type: "tween",
-          duration: 0 // Instant movement to eliminate trailing lag and prevent clicking offset issues
+          duration: 0 
         }
       }
       style={{

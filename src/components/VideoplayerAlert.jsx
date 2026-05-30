@@ -21,7 +21,7 @@ const VideoplayerAlert = ({ movie, play, setPlay, type }) => {
       <img
         src={`${import.meta.env.BASE_URL}pawlogo.png`}
         alt="BingeCat Logo"
-        className="hidden md:block absolute top-[8%] left-[25%] w-30 opacity-90 z-50 drop-shadow-[0_0_40px_rgba(168,85,247,0.45)]"
+        className="hidden md:block absolute top-[5%] left-[30%] w-30 opacity-90 z-50 drop-shadow-[0_0_40px_rgba(168,85,247,0.45)]"
       />
       <img
         src={`${import.meta.env.BASE_URL}applogo.png`}
@@ -31,7 +31,7 @@ const VideoplayerAlert = ({ movie, play, setPlay, type }) => {
       <img
         src={`${import.meta.env.BASE_URL}pawlogo.png`}
         alt="BingeCat Logo"
-        className="hidden md:block absolute top-[8%] right-[25%] w-30 opacity-90 z-50 drop-shadow-[0_0_40px_rgba(168,85,247,0.45)]"
+        className="hidden md:block absolute top-[5%] right-[30%] w-30 opacity-90 z-50 drop-shadow-[0_0_40px_rgba(168,85,247,0.45)]"
       />
 
       <div className="relative z-10 w-[95%] sm:w-[90%] md:w-[75%] h-[50vh] sm:h-[70vh] md:h-[80%] max-w-4xl rounded-2xl sm:rounded-3xl overflow-hidden border border-purple-700/40 bg-gradient-to-br from-zinc-900 via-black to-zinc-950 shadow-[0_0_40px_rgba(168,85,247,0.25)] flex flex-col">

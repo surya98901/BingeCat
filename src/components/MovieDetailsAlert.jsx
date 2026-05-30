@@ -40,13 +40,14 @@ const MovieDetailsAlert = ({ movie }) => {
         </div>
 
         <div className="flex items-center gap-2 mt-3">
-          <Link to={`/BingeCat/${type}/${movie.id}`}>
+          <Link to={`/BingeCat/${type}/${movie.id}`} aria-label={`View details for ${movie.title}`}>
             <BingeCatButton variant="primary">Details</BingeCatButton>
           </Link>
 
           <BingeCatButton
             variant="ghost"
             className={`px-1.5 ${isSaved ? "text-yellow-400" : "text-white"}`}
+            aria-label={isSaved ? "Remove from watchlist" : "Add to watchlist"}
             onClick={() => {
               dispatch(type == "movies" ? addMovie(movie) : addTvShow(movie));
             }}
@@ -54,9 +55,9 @@ const MovieDetailsAlert = ({ movie }) => {
             <Bookmark size={16} fill={isSaved ? "currentColor" : "none"} />
           </BingeCatButton>
 
-          <BingeCatButton variant="ghost">👍</BingeCatButton>
+          <BingeCatButton variant="ghost" aria-label="Like movie">👍</BingeCatButton>
 
-          <BingeCatButton variant="ghost">👎</BingeCatButton>
+          <BingeCatButton variant="ghost" aria-label="Dislike movie">👎</BingeCatButton>
         </div>
 
         <p className="text-xs text-gray-300 mt-2 line-clamp-3">

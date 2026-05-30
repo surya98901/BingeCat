@@ -6,6 +6,10 @@ import { IMAGE_URL } from "../assets/constants";
 const MovieRow = ({ movies, direction, offset, shift, scale, rotate, speed }) => {
   const isLeft = direction === "left";
 
+  if (!movies || !Array.isArray(movies) || movies.length === 0) {
+    return null;
+  }
+
   return (
     <div
       className="absolute w-full overflow-hidden"

@@ -21,18 +21,18 @@ const useSearchMovie = (queryList = []) => {
           const data = await response.json();
 
           if (data?.results?.length) {
-            allResults.push(...data.results); // add all matching results
+            allResults.push(...data.results); 
           }
         }
 
-        dispatch(addGptSuggestedMovies(allResults)); // dispatch once with all results
+        dispatch(addGptSuggestedMovies(allResults)); 
       } catch (error) {
         console.error("Failed to fetch GPT suggested movies:", error);
       }
     };
 
     fetchMovies();
-  }, [JSON.stringify(queryList), dispatch]); // include JSON.stringify to track deep changes
+  }, [JSON.stringify(queryList), dispatch]); 
 };
 
 export default useSearchMovie;
