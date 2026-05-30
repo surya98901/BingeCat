@@ -23,7 +23,7 @@ import MediaSection from "./MediaSection";
 import VideoplayerAlert from "./VideoplayerAlert";
 import MovieDetailsAlert from "./MovieDetailsAlert";
 import { setType } from "../store/slices/typeSlice";
-import BackgroundAnimation from "./BackgroundAnimation";
+import BackgroundAnimation from "./BackGroundAnimation";
 
 const MovieDetailsPage = () => {
   const Loadingmovies = useSelector((state) => state.movies?.nowPlayingMovies);
@@ -56,7 +56,7 @@ const MovieDetailsPage = () => {
   );
 
   const watchlist =
-    type === "movies"
+    type === "movie"
       ? useSelector((state) => state.user.movieWatchList) || []
       : useSelector((state) => state.user.tvShowWatchList) || [];
 
@@ -68,7 +68,7 @@ const MovieDetailsPage = () => {
 
   return (
     <div>
-      <div className="group relative h-[80vh] overflow-hidden text-white">
+      <div className="group relative min-h-[85vh] md:h-[80vh] overflow-hidden text-white flex items-center md:items-end py-16 md:py-0">
         <img
           key={movie.backdrop_path}
           src={IMAGE_URL + movie.backdrop_path}
@@ -76,71 +76,78 @@ const MovieDetailsPage = () => {
           className="absolute inset-0 h-full w-full object-cover transition-all duration-700"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/20 md:bg-gradient-to-r md:from-black md:via-black/60 md:to-transparent" />
 
-        <div className="relative z-10 mx-50 flex h-full items-end">
-          <div className="flex gap-5">
+        <div className="relative z-10 mx-4 sm:mx-12 md:mx-20 lg:mx-30 flex flex-col md:flex-row h-full items-center md:items-end gap-6 w-full pb-8 pt-10 md:pt-0">
+          <div className="flex-shrink-0">
             <img
               src={IMAGE_URL + movie.poster_path}
               alt={movie.title || movie.name}
-              className="m-10 h-[60vh] w-[20vw] overflow-hidden rounded-2xl shadow-lg"
+              className="w-[150px] sm:w-[200px] md:w-[220px] lg:w-[250px] aspect-[2/3] overflow-hidden rounded-2xl shadow-lg border-2 border-purple-500/30"
             />
           </div>
 
-          <div className="mb-10 flex h-[50vh] w-[65vw] flex-col gap-3">
-            <h1 className="text-[3rem] font-bold">
+          <div className="flex flex-col gap-3 w-full max-w-4xl px-4 md:px-0 text-center md:text-left">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold">
               {movie.title || movie.name}
 
-              <span className="ml-4 text-xl text-gray-300">
+              <span className="ml-4 text-sm sm:text-base md:text-xl text-gray-300">
                 {(movie.release_date || movie.first_air_date)?.split("-")[0]}
               </span>
             </h1>
 
-            <p>{movie.genres?.map((genre) => genre.name).join(", ")}</p>
+            <p className="text-xs sm:text-sm md:text-base text-purple-400 font-medium">
+              {movie.genres?.map((genre) => genre.name).join(", ")}
+            </p>
 
             {movie.tagline && (
-              <p className="text-xl italic text-gray-400">{movie.tagline}</p>
+              <p className="text-sm sm:text-base md:text-lg italic text-zinc-400">
+                "{movie.tagline}"
+              </p>
             )}
 
-            <div className="items-center gap-5 p-2">
-              <div className="flex gap-3">
-                <p>⭐ {movie.vote_average?.toFixed(1)}</p>
-              </div>
+            <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-5 justify-center md:justify-start">
+              <span className="bg-purple-700/60 backdrop-blur-md text-white font-bold px-3 py-1.5 rounded-xl text-sm sm:text-base border border-purple-500/20">
+                ⭐ {movie.vote_average?.toFixed(1)}
+              </span>
 
-              <div className="mt-2 flex gap-3">
-                <BingCatButton variant="round">
-                  <Heart />
+              <div className="flex gap-3">
+                <BingCatButton variant="round" className="w-10 h-10 flex items-center justify-center">
+                  <Heart size={18} />
                 </BingCatButton>
 
                 <BingCatButton
                   variant="round"
-                  className={`px-1.5 ${
+                  className={`w-10 h-10 flex items-center justify-center ${
                     isSaved ? "text-yellow-400" : "text-white"
                   }`}
                   onClick={() => {
                     dispatch(
-                      type == "movies" ? addMovie(movie) : addTvShow(movie),
+                      type == "movie" ? addMovie(movie) : addTvShow(movie),
                     );
                   }}
                 >
-                  <Bookmark />
+                  <Bookmark size={18} />
                 </BingCatButton>
 
-                <BingCatButton variant="round" onClick={() => setPlay(true)}>
-                  <Play />
+                <BingCatButton variant="round" className="w-10 h-10 flex items-center justify-center" onClick={() => setPlay(true)}>
+                  <Play size={18} />
                 </BingCatButton>
               </div>
             </div>
 
-            <label>Overview</label>
-
-            <p className="mb-6 text-xl text-gray-300">{movie.overview}</p>
+            <div className="flex flex-col gap-1 mt-2">
+              <label className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-zinc-500">Overview</label>
+              <p className="text-xs sm:text-sm md:text-base text-gray-300 leading-relaxed max-w-2xl">
+                {movie.overview}
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="section-2 mx-30 flex p-2">
-        <div className="leftpart w-[75%] border-r border-purple-700 p-10">
+      <div className="section-2 mx-4 sm:mx-12 md:mx-20 lg:mx-30 flex flex-col lg:flex-row p-2 gap-6 lg:gap-10">
+        <div className="leftpart w-full lg:w-[75%] border-b lg:border-b-0 lg:border-r border-purple-700/50 p-4 sm:p-10">
           <AwardsBanner />
 
           <div className="w-full p-5 text-xl">
@@ -155,7 +162,7 @@ const MovieDetailsPage = () => {
           </div>
         </div>
 
-        <div className="rightpart w-[25%] p-10">
+        <div className="rightpart w-full lg:w-[25%] p-4 sm:p-10">
           {type === "movie" ? (
             <ReleaseDetails movie={movie} />
           ) : (

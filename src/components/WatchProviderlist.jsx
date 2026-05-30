@@ -27,14 +27,14 @@ const WatchProviderList = ({ id }) => {
               {p}:
             </label>
 
-            <div className="flex gap-5 my-5">
+            <div className="flex flex-wrap gap-3 my-3">
               {list.map((wp) => (
                 <motion.img
                   key={wp.provider_id}
                   src={IMAGE_URL + wp.logo_path}
                   alt={wp.provider_name}
-                  className="w-[40px] h-[40px] object-contain rounded-lg"
-                  whileHover={{ scale: 2 }}
+                  className="w-[40px] h-[40px] object-contain rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-800"
+                  whileHover={{ scale: 1.5 }}
                   transition={{ type: "spring", stiffness: 250, damping: 15 }}
                 />
               ))}

@@ -1,72 +1,85 @@
 import { IMAGE_URL } from "../assets/constants";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const CastContainer = ({ credits }) => {
-  const [index, setIndex] = useState(0);
-
-  const chunkSize = 5;
-  const cardWidth = 150 + 12;
   const cast = credits?.cast || [];
+  const scrollRef = useRef(null);
+  const [showLeft, setShowLeft] = useState(false);
+  const [showRight, setShowRight] = useState(true);
 
-  const maxIndex = Math.ceil(cast.length / chunkSize) - 1;
-
-  const next = () => {
-    if (index < maxIndex) setIndex(index + 1);
+  const checkScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setShowLeft(el.scrollLeft > 5);
+    setShowRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
   };
 
-  const prev = () => {
-    if (index > 0) setIndex(index - 1);
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, [cast]);
+
+  const scroll = (dir) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const scrollAmount = el.clientWidth * 0.75;
+    el.scrollBy({
+      left: dir === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
+    setTimeout(checkScroll, 300);
   };
+
+  if (!cast.length) return null;
 
   return (
-    <div className="group relative flex flex-col gap-3 overflow-hidden">
-      <label className="capitalize text-l font-bold">Cast</label>
+    <div className="group relative flex flex-col gap-3 overflow-visible">
+      <label className="capitalize text-lg font-bold dark:text-white">Cast</label>
 
-      {index > 0 && (
-        <ChevronLeft
-          size={30}
-          onClick={prev}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 
-                     opacity-0 group-hover:opacity-100 transition 
-                     bg-purple-700 text-white p-2 rounded-full cursor-pointer"
-        />
-      )}
-
-      {index < maxIndex && (
-        <ChevronRight
-          size={30}
-          onClick={next}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 
-                     opacity-0 group-hover:opacity-100 transition 
-                     bg-purple-700 text-white p-2 rounded-full cursor-pointer"
-        />
-      )}
-
-      <div className="overflow-hidden">
-        <motion.div
-          animate={{ x: -index * chunkSize * cardWidth }}
-          transition={{ type: "tween", ease: "easeInOut", duration: 1 }}
-          className="flex gap-3"
+      {showLeft && (
+        <button
+          onClick={() => scroll("left")}
+          className="hidden md:flex absolute left-0 top-[60%] -translate-y-1/2 z-25 bg-purple-700 hover:bg-purple-800 text-white p-2 rounded-full cursor-pointer shadow-lg shadow-purple-900/45 transition opacity-0 group-hover:opacity-100"
         >
-          {cast.map((actor) => (
-            <div
-              key={actor.id}
-              className="w-[150px] h-[220px] flex-shrink-0 flex flex-col items-center border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden"
-            >
-              <img
-                src={IMAGE_URL + actor.profile_path}
-                alt={actor.name}
-                className="w-full h-[160px] object-cover"
-              />
-              <p className="text-sm font-bold mt-2 text-center">{actor.name}</p>
-              <p className="text-xs text-gray-500 text-center">
+          <ChevronLeft size={24} />
+        </button>
+      )}
+
+      {showRight && (
+        <button
+          onClick={() => scroll("right")}
+          className="hidden md:flex absolute right-0 top-[60%] -translate-y-1/2 z-25 bg-purple-700 hover:bg-purple-800 text-white p-2 rounded-full cursor-pointer shadow-lg shadow-purple-900/45 transition opacity-0 group-hover:opacity-100"
+        >
+          <ChevronRight size={24} />
+        </button>
+      )}
+
+      <div
+        ref={scrollRef}
+        onScroll={checkScroll}
+        className="flex gap-4 overflow-x-auto scroll-smooth no-scrollbar py-2 w-full"
+      >
+        {cast.map((actor) => (
+          <div
+            key={actor.id}
+            className="w-[130px] sm:w-[150px] h-[200px] sm:h-[220px] flex-shrink-0 flex flex-col items-center border border-gray-300 dark:border-gray-800 rounded-lg overflow-hidden bg-white dark:bg-zinc-900 shadow-sm"
+          >
+            <img
+              src={actor.profile_path ? IMAGE_URL + actor.profile_path : "/fallback-avatar.png"}
+              alt={actor.name}
+              className="w-full h-[130px] sm:h-[150px] object-cover"
+              loading="lazy"
+            />
+            <div className="p-1.5 flex flex-col items-center justify-center flex-1 min-w-0 w-full text-center">
+              <p className="text-xs sm:text-sm font-bold dark:text-white truncate w-full">{actor.name}</p>
+              <p className="text-[10px] sm:text-xs text-gray-500 truncate w-full">
                 {actor.character}
               </p>
             </div>
-          ))}
-        </motion.div>
+          </div>
+        ))}
       </div>
     </div>
   );

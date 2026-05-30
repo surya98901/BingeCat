@@ -12,15 +12,15 @@ const SignInPage = () => {
     setSignIn(!signIn);
   }
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center mt-40">
-      <div className="relative bg-white dark:bg-black border border-purple-700 rounded-2xl w-[600px] min-h-[400px]  pt-20 px-10 pb-10 shadow-2xl flex flex-col items-center">
+    <div className="absolute inset-0 z-20 flex items-center justify-center mt-24 sm:mt-40">
+      <div className="relative bg-white dark:bg-black border border-purple-700 rounded-2xl w-[90%] sm:w-[500px] min-h-[400px]  pt-20 px-6 sm:px-10 pb-10 shadow-2xl flex flex-col items-center">
         <img
-          src="public\applogo.png"
+          src={`${import.meta.env.BASE_URL}applogo.png`}
           alt="App Logo"
           className="
-          w-[190px]
+          w-[150px] sm:w-[190px]
           absolute
-          -top-24
+          -top-20 sm:-top-24
           left-1/2
           -translate-x-1/2
           z-30

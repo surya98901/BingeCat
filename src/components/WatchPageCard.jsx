@@ -16,8 +16,8 @@ const WatchPageCard = ({ movie, type }) => {
   };
 
   return (
-    <div className="group relative flex w-full gap-5 overflow-hidden rounded-3xl border-2 border-purple-400/60 bg-white p-4 backdrop-blur-md transition-all duration-300 dark:border-purple-500/30 dark:bg-zinc-900/40">
-      <div className="relative h-[220px] min-w-[320px] overflow-hidden rounded-2xl">
+    <div className="group relative flex flex-col sm:flex-row w-full gap-5 overflow-hidden rounded-3xl border-2 border-purple-400/60 bg-white p-4 backdrop-blur-md transition-all duration-300 dark:border-purple-500/30 dark:bg-zinc-900/40">
+      <div className="relative h-[200px] w-full sm:h-[220px] sm:w-[320px] sm:min-w-[320px] overflow-hidden rounded-2xl flex-shrink-0">
         <img
           src={
             movie.backdrop_path
@@ -47,9 +47,9 @@ const WatchPageCard = ({ movie, type }) => {
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between pr-5 gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pr-5 gap-3">
             <div>
-              <h1 className="line-clamp-1 text-3xl font-black tracking-tight text-zinc-900 dark:text-white">
+              <h1 className="line-clamp-1 text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-zinc-900 dark:text-white">
                 {movie.title || movie.name}
 
                 <span className="ml-3 text-sm font-medium text-zinc-500 dark:text-zinc-400">
@@ -59,8 +59,8 @@ const WatchPageCard = ({ movie, type }) => {
 
               <div className="mt-2 h-[3px] w-24 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
             </div>
-            <Link to={`/BingeCat/${type}/${movie.id}`}>
-              <BingeCatButton variant="primary">Details</BingeCatButton>
+            <Link to={`/BingeCat/${type}/${movie.id}`} className="w-full sm:w-auto">
+              <BingeCatButton variant="primary" className="w-full sm:w-auto">Details</BingeCatButton>
             </Link>
           </div>
 

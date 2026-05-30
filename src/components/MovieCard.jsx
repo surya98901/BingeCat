@@ -1,8 +1,8 @@
 import { IMAGE_URL } from "../assets/constants";
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, className = "w-[160px] mx-2 flex-shrink-0" }) => {
   return (
-    <div className="w-[160px] flex flex-col gap-2 mx-2 flex-shrink-0">
+    <div className={`flex flex-col gap-2 ${className}`}>
 
       <div className="relative h-[240px] rounded-2xl overflow-hidden shadow-lg">
         <img

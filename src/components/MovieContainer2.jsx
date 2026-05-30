@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef } from "react";
-
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
-
 import { Play, Heart, Bookmark, ChevronLeft, ChevronRight } from "lucide-react";
 import MovieCard from "./MovieCard";
 import MovieDetailsAlert from "./MovieDetailsAlert";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const MovieContaier2 = ({ movies }) => {
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
   const [activeId, setActiveId] = useState(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const currentType = useSelector((state) => state.type.currentType); // "movies" or "series"
 
   const scrollRef = useRef(null);
 
@@ -25,6 +27,7 @@ const MovieContaier2 = ({ movies }) => {
 
   useEffect(() => {
     checkScroll();
+    setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
   }, [movies]);
 
   const scroll = (dir) => {
@@ -45,10 +48,10 @@ const MovieContaier2 = ({ movies }) => {
       {showLeft && (
         <button
           onClick={() => scroll("left")}
-          className="absolute bottom-0 -left-15 top-0 z-10 flex w-12 items-center justify-center opacity-0 transition group-hover:opacity-100 dark:bg-gradient-to-r dark:from-black/70 dark:to-transparent"
+          className="hidden md:flex absolute bottom-0 -left-12 top-0 z-10 w-12 items-center justify-center opacity-0 transition group-hover:opacity-100 dark:bg-gradient-to-r dark:from-black/70 dark:to-transparent"
         >
           <ChevronLeft
-            className="rounded-full bg-purple-600 p-2 text-white"
+            className="rounded-full bg-purple-600 p-2 text-white cursor-pointer"
             size={50}
           />
         </button>
@@ -57,10 +60,10 @@ const MovieContaier2 = ({ movies }) => {
       {showRight && (
         <button
           onClick={() => scroll("right")}
-          className="absolute bottom-0 -right-10 top-0 z-10 flex w-12 items-center justify-center opacity-0 transition group-hover:opacity-100 dark:bg-gradient-to-l dark:from-black/70 dark:to-transparent"
+          className="hidden md:flex absolute bottom-0 -right-12 top-0 z-10 w-12 items-center justify-center opacity-0 transition group-hover:opacity-100 dark:bg-gradient-to-l dark:from-black/70 dark:to-transparent"
         >
           <ChevronRight
-            className="rounded-full bg-purple-600 p-2 text-white"
+            className="rounded-full bg-purple-600 p-2 text-white cursor-pointer"
             size={50}
           />
         </button>
@@ -79,16 +82,18 @@ const MovieContaier2 = ({ movies }) => {
               onMouseEnter={() => setActiveId(movie.id)}
               onMouseLeave={() => setActiveId(null)}
             >
-              <motion.div
-                className="cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-              >
-                <MovieCard movie={movie} />
-              </motion.div>
+              <Link to={`/BingeCat/${currentType}/${movie.id}`}>
+                <motion.div
+                  className="cursor-pointer"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <MovieCard movie={movie} />
+                </motion.div>
+              </Link>
 
               <AnimatePresence>
-                {activeId === movie.id && (
+                {!isTouchDevice && activeId === movie.id && (
                   <motion.div
                     initial={{
                       opacity: 0,
@@ -119,4 +124,5 @@ const MovieContaier2 = ({ movies }) => {
     </div>
   );
 };
+
 export default MovieContaier2;

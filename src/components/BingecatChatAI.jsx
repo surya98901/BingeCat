@@ -72,7 +72,7 @@ const BingecatChatAI = () => {
     <>
       {!isOpen ? (
         <motion.img
-          src="/applogo.png"
+          src={`${import.meta.env.BASE_URL}applogo.png`}
           alt="BingeCat Logo"
           className="fixed bottom-6 right-6 z-50 w-20 h-20 md:w-24 md:h-24 cursor-pointer drop-shadow-2xl"
           animate={{
@@ -111,7 +111,7 @@ const BingecatChatAI = () => {
           transition={{
             duration: 0.25,
           }}
-          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-[95vw] md:w-[420px] h-[92vh] md:h-[720px] z-50 rounded-[2rem] overflow-hidden border border-purple-700/30 bg-white dark:bg-black shadow-[0_0_40px_rgba(168,85,247,0.15)] backdrop-blur-xl flex flex-col"
+          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-[95vw] md:w-[420px] h-[85vh] md:h-[720px] max-h-[calc(100vh-2rem)] z-50 rounded-[2rem] overflow-hidden border border-purple-700/30 bg-white dark:bg-black shadow-[0_0_40px_rgba(168,85,247,0.15)] backdrop-blur-xl flex flex-col"
         >
           <div className="flex items-center justify-between p-5 border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-black/90 backdrop-blur-xl">
             <div className="flex items-center gap-3">

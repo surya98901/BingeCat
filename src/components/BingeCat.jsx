@@ -9,7 +9,7 @@ const BingeCat = () => {
                 transition={{ duration: 2, ease: "easeInOut" }}
             >
                 <img
-                    src="public\applogo.png"
+                    src={`${import.meta.env.BASE_URL}applogo.png`}
                     alt="logo"
                     className="w-full"
                 />

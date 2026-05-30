@@ -94,9 +94,9 @@ const Explorepage = () => {
   }, [showMe, selectedGenres, network, language, movieData, seriesData]);
 
   return (
-    <div className="mt-15 flex w-full justify-center px-6 py-5">
-      <div className="flex w-full max-w-[1600px] gap-8">
-        <div className="mt-5 w-[20%] min-w-[280px]">
+    <div className="mt-20 sm:mt-24 flex w-full justify-center px-6 py-5">
+      <div className="flex flex-col md:flex-row w-full max-w-[1600px] gap-8">
+        <div className="mt-5 w-full md:w-[25%] lg:w-[20%] min-w-0 md:min-w-[280px]">
           <h1 className="mb-6 text-4xl font-bold text-zinc-900 dark:text-white">
             Explore
           </h1>
@@ -201,7 +201,7 @@ const Explorepage = () => {
           </div>
         </div>
 
-        <div className="mt-6 flex w-[80%] flex-col">
+        <div className="mt-6 flex w-full md:w-[75%] lg:w-[80%] flex-col">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-3xl font-bold text-zinc-900 dark:text-white">
               Explore : {showMe}
@@ -225,7 +225,7 @@ const Explorepage = () => {
                   transition={{ duration: 0.2 }}
                 >
                   <Link to={`/BingeCat/${type}/${movie.id}`}>
-                    <MovieCard movie={movie} />
+                    <MovieCard movie={movie} className="w-full" />
                   </Link>
                 </motion.div>
               </div>
@@ -235,7 +235,7 @@ const Explorepage = () => {
           {/* LOAD MORE */}
           {load < movies.length && (
             <button
-              className="mt-10 w-[60%] self-center rounded-xl bg-purple-700 px-6 py-3 text-lg font-bold text-white shadow-lg transition hover:bg-purple-800"
+              className="mt-10 w-full max-w-[320px] self-center rounded-xl bg-purple-700 px-6 py-3 text-lg font-bold text-white shadow-lg transition hover:bg-purple-800"
               onClick={() => setLoad((prev) => prev + 15)}
             >
               Load More

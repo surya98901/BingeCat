@@ -32,7 +32,7 @@ const MediaSection = ({ media }) => {
                 setActive={setActive}
             />
 
-            <div className="flex gap-5 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-5 overflow-x-auto no-scrollbar py-2">
                 {images.map((image, index) => (
                     <motion.div
                         key={image.file_path}
@@ -40,12 +40,12 @@ const MediaSection = ({ media }) => {
                         whileTap={{ scale: 0.97 }}
                         onClick={() => setSelectedIndex(index)}
                         className={`
-                            h-[50vh]
+                            h-[180px] sm:h-[280px] md:h-[350px]
                             ${active === "posters"
-                                ? "w-[30%]"
+                                ? "w-[120px] sm:w-[180px] md:w-[230px]"
                                 : active === "logos"
-                                    ? "w-[40%]"
-                                    : "w-[100%]"
+                                    ? "w-[160px] sm:w-[240px] md:w-[300px]"
+                                    : "w-[260px] sm:w-[400px] md:w-[500px]"
                             }
                             overflow-hidden
                             rounded-xl

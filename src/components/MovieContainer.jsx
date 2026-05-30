@@ -5,6 +5,7 @@ import MovieCard from "./MovieCard";
 import SlideButtonsList from "../ReUsables/SlideButtonsList";
 import MovieDetailsAlert from "./MovieDetailsAlert";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const options = ["Streaming", "On TV", "For Rent", "In Theatres"];
 
@@ -50,6 +51,7 @@ const MovieContainer = ({ gene, type }) => {
   const [showRight, setShowRight] = useState(true);
   const [activeId, setActiveId] = useState(null);
   const [active, setActive] = useState(0);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   const checkScroll = () => {
     const el = scrollRef.current;
@@ -60,6 +62,7 @@ const MovieContainer = ({ gene, type }) => {
 
   useEffect(() => {
     checkScroll();
+    setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
   }, [movies]);
 
   const scroll = (dir) => {
@@ -76,10 +79,10 @@ const MovieContainer = ({ gene, type }) => {
 
   return (
     <div
-      className="px-50 dark:bg-black py-5"
+      className="px-4 sm:px-12 md:px-24 lg:px-32 xl:px-48 dark:bg-black py-5"
       onMouseLeave={() => setActiveId(null)}
     >
-      <div className="flex px-5 items-center gap-10">
+      <div className="flex flex-col sm:flex-row px-5 items-start sm:items-center gap-4 sm:gap-10 mb-4">
         <h1 className="text-lg font-semibold dark:text-white capitalize">
           {gene}
         </h1>
@@ -94,11 +97,11 @@ const MovieContainer = ({ gene, type }) => {
         {showLeft && (
           <button
             onClick={() => scroll("left")}
-            className="absolute -left-15 top-0 bottom-0 z-10 w-12 flex items-center justify-center 
+            className="hidden md:flex absolute -left-12 lg:-left-16 top-0 bottom-0 z-10 w-12 items-center justify-center 
                         dark:bg-gradient-to-r from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition"
           >
             <ChevronLeft
-              className="text-white bg-purple-600 p-2 rounded-full"
+              className="text-white bg-purple-600 p-2 rounded-full cursor-pointer"
               size={50}
             />
           </button>
@@ -107,11 +110,11 @@ const MovieContainer = ({ gene, type }) => {
         {showRight && (
           <button
             onClick={() => scroll("right")}
-            className="absolute -right-15 top-0 bottom-0 z-10 w-12 flex items-center justify-center 
+            className="hidden md:flex absolute -right-12 lg:-right-16 top-0 bottom-0 z-10 w-12 items-center justify-center 
                         dark:bg-gradient-to-l from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition"
           >
             <ChevronRight
-              className="text-white bg-purple-600 p-2 rounded-full"
+              className="text-white bg-purple-600 p-2 rounded-full cursor-pointer"
               size={50}
             />
           </button>
@@ -129,16 +132,18 @@ const MovieContainer = ({ gene, type }) => {
                 className="relative snap-start"
                 onMouseEnter={() => setActiveId(movie.id)}
               >
-                <motion.div
-                  className="cursor-pointer"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <MovieCard movie={movie} />
-                </motion.div>
+                <Link to={`/BingeCat/${type === "movie" ? "movies" : "series"}/${movie.id}`}>
+                  <motion.div
+                    className="cursor-pointer"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <MovieCard movie={movie} />
+                  </motion.div>
+                </Link>
 
                 <AnimatePresence>
-                  {activeId === movie.id && (
+                  {!isTouchDevice && activeId === movie.id && (
                     <motion.div
                       initial={{ opacity: 0, y: 20, scale: 0.95 }}
                       animate={{ opacity: 1, y: -20, scale: 1.1 }}

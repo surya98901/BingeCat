@@ -41,7 +41,7 @@ const WatchListPage = () => {
   const isCompletelyEmpty = totalItems === 0;
 
   return (
-    <section className="min-h-screen w-full px-4 pt-30 px-50 bg-white dark:bg-black">
+    <section className="min-h-screen w-full px-4 sm:px-12 md:px-24 lg:px-32 xl:px-48 pt-24 sm:pt-30 bg-white dark:bg-black">
       {!isCompletelyEmpty ? (
         <div className="flex flex-col gap-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
