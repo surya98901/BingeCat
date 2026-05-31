@@ -20,8 +20,8 @@ const MovieCard = ({ movie, className = "w-[calc((100vw-68px)/4)] sm:w-[160px] f
       if (navigator.vibrate) {
         try {
           navigator.vibrate(50);
-        } catch (err) {
-          
+        } catch {
+          // Ignore vibration unsupported error
         }
       }
     }, 600);

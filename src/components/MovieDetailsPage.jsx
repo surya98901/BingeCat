@@ -1,10 +1,9 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import MovieContaier2 from "./MovieContainer2";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 
-import { Play, Heart, Bookmark, ChevronLeft, ChevronRight } from "lucide-react";
+import { Play, Heart, Bookmark } from "lucide-react";
 
 import { IMAGE_URL } from "../assets/constants";
 
@@ -12,8 +11,8 @@ import useFindMovieById from "../Hooks/useFindMovieById";
 import useGetCredits from "../Hooks/useGetCredits";
 import useGetMediaById from "../Hooks/useGetMediaById";
 import useGetRecommendtaions from "../Hooks/useGetRecommendtaions";
-import MovieCard from "../components/MovieCard";
-import { addMovie, addTvShow } from "../store/slices/userSlice";
+import { addMovie, addTvShow,addLikedMovie,addLikedTvShow } from "../store/slices/userSlice";
+
 import BingCatButton from "../ReUsables/BingeCatButton";
 import ReleaseDetails from "./ReleaseDetails";
 import SeriesDetails from "./SeriesDetails";
@@ -21,18 +20,11 @@ import AwardsBanner from "./AwardsBanner";
 import CastContainer from "./CastContainer";
 import MediaSection from "./MediaSection";
 import VideoplayerAlert from "./VideoplayerAlert";
-import MovieDetailsAlert from "./MovieDetailsAlert";
-import { setType } from "../store/slices/typeSlice";
 import BackgroundAnimation from "./BackGroundAnimation";
 
 const MovieDetailsPage = () => {
   const Loadingmovies = useSelector((state) => state.movies?.nowPlayingMovies);
   const [play, setPlay] = useState(false);
-  const [showLeft, setShowLeft] = useState(false);
-  const [showRight, setShowRight] = useState(true);
-  const [activeId, setActiveId] = useState(null);
-
-  const scrollRef = useRef(null);
 
   const { id } = useParams();
   const location = useLocation();
@@ -43,11 +35,13 @@ const MovieDetailsPage = () => {
   useGetRecommendtaions(id, type);
 
   const credits = useGetCredits(id, type);
-  const media = useGetMediaById(type, id);
+  const media = useGetMediaById(id, type);
 
   const movie = useSelector((state) =>
     type === "movie" ? state.movies.movieDetails : state.tvSeries.SeriesDetails,
   );
+
+
 
   const recommendations = useSelector((state) =>
     type === "movie"
@@ -55,14 +49,18 @@ const MovieDetailsPage = () => {
       : state.tvSeries.recommendationSeriesDetails,
   );
 
-  const watchlist =
-    type === "movie"
-      ? useSelector((state) => state.user.movieWatchList) || []
-      : useSelector((state) => state.user.tvShowWatchList) || [];
+  const movieWatchList = useSelector((state) => state.user.movieWatchList) || [];
+  const tvShowWatchList = useSelector((state) => state.user.tvShowWatchList) || [];
+  const watchlist = type === "movie" ? movieWatchList : tvShowWatchList;
+  
+  const likedMovies = useSelector((state) => state.user.likedMovies) || [];
+  const likedTvShows = useSelector((state) => state.user.likedTvShows) || [];
+  const liked = type === "movie" ? likedMovies : likedTvShows;
+  const isLiked = liked.some((item) => item.id === movie?.id);
 
   const isSaved = watchlist.some((item) => item.id === movie?.id);
 
-  if (!movie || !credits || !media) {
+  if (!movie) {
     return <BackgroundAnimation movies={Loadingmovies} speed={0.5} />;
   }
 
@@ -112,7 +110,13 @@ const MovieDetailsPage = () => {
               </span>
 
               <div className="flex gap-3">
-                <BingCatButton variant="round" className="w-10 h-10 flex items-center justify-center">
+                <BingCatButton variant="round" className={`w-10 h-10 flex items-center justify-center ${
+                    isLiked ? "text-yellow-400" : "text-white"
+                  }`}
+                onClick={()=>{
+                  dispatch(type=="movie" ? addLikedMovie(movie) : addLikedTvShow(movie))
+                }}
+                >
                   <Heart size={18} />
                 </BingCatButton>
 

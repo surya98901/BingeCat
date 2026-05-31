@@ -5,19 +5,21 @@ import { setWatchProviders} from "../store/slices/watchProviderslice";
 import { useEffect } from "react";
 
 const useWatchProvider = (id) => {
-    const dispatch = useDispatch();
-  const getMoviewatchproviders = async (id) => {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}/watch/providers`,
-      API_OPTIONS
-    );
-    const data = await response.json();
-    dispatch(setWatchProviders(data.results.IN));
-  };
+  const dispatch = useDispatch();
 
-  const lst = useEffect(() => {
-    getMoviewatchproviders(id);
-  }, []);
+  useEffect(() => {
+    if (!id) return;
+    const getMoviewatchproviders = async () => {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${id}/watch/providers`,
+        API_OPTIONS
+      );
+      const data = await response.json();
+      dispatch(setWatchProviders(data.results.IN));
+    };
+
+    getMoviewatchproviders();
+  }, [id, dispatch]);
 };
 
 export default useWatchProvider;

@@ -1,36 +1,39 @@
 
-import { useDispatch } from "react-redux";
-import { addTrailer } from "../store/slices/moviesSlice";
 import { API_OPTIONS } from "../assets/constants";
 import { useState, useEffect } from "react";
 
+const useGetMediaById = (mediaId,mediaType ) => {
+  const [media, setMedia] = useState({ video: null, images: null });
 
-const useGetMediaById = (mediaType, mediaId) => {
+  useEffect(() => {
+    if (!mediaId) return;
 
-    const [media, setMedia] = useState({ video: null, images: null });
-
-    const getvideo = async (id) => {
-        const response = await fetch(
-            `https://api.themoviedb.org/3/${mediaType}/${id}/videos?language=en-US`,
+    const fetchMedia = async () => {
+      try {
+        const [videoRes, imagesRes] = await Promise.all([
+          fetch(
+            `https://api.themoviedb.org/3/${mediaType}/${mediaId}/videos?language=en-US`,
             API_OPTIONS
-        );
-        const data = await response.json();
-        setMedia((prev) => ({ ...prev, video: data }));
-    };
-    const getImages = async (id) => {
-        const response = await fetch(
-            `https://api.themoviedb.org/3/${mediaType}/${id}/images?language=en-US`,
+          ),
+          fetch(
+            `https://api.themoviedb.org/3/${mediaType}/${mediaId}/images?language=en-US`,
             API_OPTIONS
-        );
-        const data = await response.json();
-        setMedia((prev) => ({ ...prev, images: data }));
+          ),
+        ]);
+
+        const videoData = await videoRes.json();
+        const imagesData = await imagesRes.json();
+
+        setMedia({ video: videoData, images: imagesData });
+      } catch {
+        // Silently catch network or parsing errors
+      }
     };
 
-    useEffect(() => { if(mediaId){
-        getvideo(mediaId);
-        getImages(mediaId);
-    }}, [   mediaId, mediaType]);
-    return media;
+    fetchMedia();
+  }, [mediaId, mediaType]);
+
+  return media;
 };
 
 export default useGetMediaById;

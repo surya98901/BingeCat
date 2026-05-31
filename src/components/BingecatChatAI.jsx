@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 const BingecatChatAI = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,6 +41,8 @@ const BingecatChatAI = () => {
     "Show me some comedies",
   ];
 
+  const currUser = useSelector((state) => state.user.currentUser);
+
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({
@@ -55,6 +58,10 @@ const BingecatChatAI = () => {
   }, [isOpen]);
 
   function handleSend(customText) {
+    if (!currUser) {
+      alert("please signin Or create an account to get use BingeCat Ai");
+      return;
+    }
     const message = customText || text;
 
     if (message.trim() === "") return;
@@ -91,7 +98,13 @@ const BingecatChatAI = () => {
           whileTap={{
             scale: 0.95,
           }}
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            if (!currUser) {
+              alert("please signin Or create an account to get use BingeCat Ai");
+            } else {
+              setIsOpen(true);
+            }
+          }}
         />
       ) : (
         <motion.div

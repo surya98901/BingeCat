@@ -1,9 +1,9 @@
 import { IMAGE_URL } from "../assets/constants";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const CastContainer = ({ credits }) => {
-  const cast = credits?.cast || [];
+  const cast = useMemo(() => credits?.cast || [], [credits]);
   const scrollRef = useRef(null);
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);

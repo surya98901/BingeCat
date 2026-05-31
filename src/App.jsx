@@ -11,9 +11,8 @@ import PawCursor from "./components/UI/PawCursor";
 import ScrollToTop from "./components/UI/ScrollToTop";
 import WatchListPage from "./components/WatchListPage";
 import Explorepage from "./components/Explorepage";
-import ForYouPage from "./components/ForYouPage";
-import { useSelector } from "react-redux";
-
+import ForYouPage from "./components/ForYouPage"; 
+import LikedContent from "./components/LikedContent";
 function App() {
   const router = createBrowserRouter([
     {
@@ -36,6 +35,7 @@ function App() {
         { path: "login", element: <h1>Login</h1> },
         { path: "explore", element: <Explorepage /> },
         { path: "for-you", element: <ForYouPage /> },
+        { path: "liked-content", element: <LikedContent /> },
       ],
     },
   ]);

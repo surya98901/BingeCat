@@ -1,13 +1,13 @@
 import React from "react";
 import BackgroundAnimation from "./BackGroundAnimation";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import BingeCat from "./BingeCat";
 import BingeCatButton from "../ReUsables/BingeCatButton";
 import SignInPage from "./SignInPage";
 
 const BasePage = () => {
   const movies = useSelector((state) => state.movies?.nowPlayingMovies);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.currentUser);
   if (!movies) {
     return <div className="text-white">Loading...</div>;
   }

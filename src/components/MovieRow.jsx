@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
 import { IMAGE_URL } from "../assets/constants";
 
 

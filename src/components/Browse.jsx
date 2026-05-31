@@ -1,12 +1,9 @@
 import MovieContainer from "./MovieContainer";
 import Banner from "./Banner";
-import { div } from "framer-motion/client";
 import { genes, those } from "../assets/constants";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Browse = ({ type }) => {
-  const currUser = useSelector((state) => state.user.user);
   const containerType = type === "movie" ? "movie" : "series";
   return (
     <div className="browse-page relative  min-h-screen bg-white dark:bg-black">

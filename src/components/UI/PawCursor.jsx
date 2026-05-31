@@ -3,13 +3,9 @@ import { useEffect, useState } from "react";
 
 export default function PawCursor() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTouchDevice] = useState(() => window.matchMedia("(hover: none)").matches);
 
   useEffect(() => {
-    
-    const hoverMediaQuery = window.matchMedia("(hover: none)");
-    setIsTouchDevice(hoverMediaQuery.matches);
-
     const move = (e) => {
       setPos({ x: e.clientX, y: e.clientY });
     };

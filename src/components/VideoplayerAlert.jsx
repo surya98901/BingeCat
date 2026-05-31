@@ -3,9 +3,12 @@ import useMovieTrailer from "../Hooks/useMovieTrailer";
 import { useSelector } from "react-redux";
 
 const VideoplayerAlert = ({ movie, play, setPlay, type }) => {
+  
+  type = type == "movie" ? "movie":"tv"  
+
   useMovieTrailer(movie.id, type);
   const trailer = useSelector((state) =>
-    type === "tv" ? state.tvSeries.trailer : state.movies.trailer,
+    type === "movie" ? state.movies.trailer : state.tvSeries.trailer,
   );
   if (!play) return null;
   if (!trailer) {

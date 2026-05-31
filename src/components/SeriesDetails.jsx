@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import { IMAGE_URL } from "../assets/constants";
+import { motion } from "framer-motion";
 
 const SeriesDetails = ({ series }) => {
     return (

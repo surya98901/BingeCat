@@ -1,4 +1,3 @@
-import { p } from "framer-motion/client";
 import { formatMoney, formatRuntime } from "../ReUsables/reusableFunction";
 import { IMAGE_URL } from "../assets/constants";
 import WatchProviderList from "./WatchProviderlist";

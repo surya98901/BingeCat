@@ -4,6 +4,8 @@ const initialState = {
   currentUser: null,
   movieWatchList: [],
   tvShowWatchList: [],
+  likedMovies: [],
+  likedTvShows: [],
 };
 
 const userSlice = createSlice({
@@ -56,6 +58,42 @@ const userSlice = createSlice({
     clearTvShowWatchList: (state) => {
       state.tvShowWatchList = [];
     },
+
+    addLikedMovie: (state, action) => {
+      const exists = state.likedMovies.some(
+        (movie) => movie.id === action.payload.id,
+      );
+
+      if (!exists) {
+        state.likedMovies.push(action.payload);
+      }
+    },
+    removeLikedMovie: (state, action) => {
+      state.likedMovies = state.likedMovies.filter(
+        (movie) => movie.id !== action.payload,
+      );
+    },
+    clearLikedMovies: (state) => {
+      state.likedMovies = [];
+    },
+
+    addLikedTvShow: (state, action) => {
+      const exists = state.likedTvShows.some(
+        (tvShow) => tvShow.id === action.payload.id,
+      );
+
+      if (!exists) {
+        state.likedTvShows.push(action.payload);
+      }
+    },
+    removeLikedTvShow: (state, action) => {
+      state.likedTvShows = state.likedTvShows.filter(
+        (tvShow) => tvShow.id !== action.payload,
+      );
+    },
+    clearLikedTvShows: (state) => {
+      state.likedTvShows = [];
+    },
   },
 });
 
@@ -69,6 +107,12 @@ export const {
   addTvShow,
   removeTvShow,
   clearTvShowWatchList,
+  addLikedMovie,
+  removeLikedMovie,
+  clearLikedMovies,
+  addLikedTvShow,
+  removeLikedTvShow,
+  clearLikedTvShows,
 } = userSlice.actions;
 
 export default userSlice.reducer;

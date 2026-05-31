@@ -28,7 +28,6 @@ const GENRE_MAP = {
 
 const Explorepage = () => {
   const [click, setClick] = useState(false);
-  const [activeId, setActiveId] = useState(null);
   const [load, setLoad] = useState(15);
 
   const dispatch = useDispatch();

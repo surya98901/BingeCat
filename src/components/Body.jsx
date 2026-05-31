@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
@@ -8,13 +8,35 @@ import useTopRatedMovies from "../hooks/useTopRatedMovies";
 import usePopularMovies from "../hooks/usePopularMovies";
 import useUpcomingMovies from "../hooks/useUpcomingMovies";
 import BingecatChatAI from "./BingecatChatAI";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../lib/firebase";
+import { setUser, clearUser } from "../store/slices/userSlice";
 
 const Body = () => {
-  const theme = useSelector((state) => state.theme.theme);
+  const dispatch = useDispatch();
+
   useNowPlayingMovies();
   useTopRatedMovies();
   usePopularMovies();
   useUpcomingMovies();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(
+          setUser({
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+          })
+        );
+      } else {
+        dispatch(clearUser());
+      }
+    });
+    return unsubscribe;
+  }, [dispatch]);
+
   return (
     <div className="text-black dark:bg-gray-900 dark:text-white min-h-screen ">
       <Header />

@@ -1,4 +1,3 @@
-import { useState } from "react";
 
 const SlideToSwitchPath = ({ tabs, active, handleTabClick }) => {
   return (

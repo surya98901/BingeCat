@@ -1,0 +1,3 @@
+# Developer Rules for BingeCat
+
+- **Imports Restriction**: Never remove any import statement from any file without manually asking the user for confirmation first.

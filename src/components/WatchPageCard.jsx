@@ -1,15 +1,12 @@
 import { IMAGE_URL } from "../assets/constants";
-import { Bookmark, Heart, Star, X } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { addMovie, removeMovie } from "../store/slices/userSlice";
+import { Star, X } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { removeMovie } from "../store/slices/userSlice";
 import { Link } from "react-router-dom";
 import BingeCatButton from "../ReUsables/BingeCatButton";
 
 const WatchPageCard = ({ movie, type }) => {
   const dispatch = useDispatch();
-  const isSaved = useSelector((state) =>
-    state.user.watchlist?.some((m) => m.id === movie?.id),
-  );
 
   const handleWatchlist = () => {
     dispatch(removeMovie(movie.id));

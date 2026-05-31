@@ -16,22 +16,21 @@ const MovieContainer = ({ gene, type }) => {
   const { popularSeries, topRatedSeries, upcomingSeries, nowPlayingSeries } =
     useSelector((state) => state.tvSeries);
 
-  const dataMap = {
-    movie: {
-      popular: popularMovies,
-      topRated: topRatedMovies,
-      upcoming: upcomingMovies,
-      nowPlaying: nowPlayingMovies,
-    },
-    series: {
-      popular: popularSeries,
-      topRated: topRatedSeries,
-      upcoming: upcomingSeries,
-      nowPlaying: nowPlayingSeries,
-    },
-  };
-
   const movies = useMemo(() => {
+    const dataMap = {
+      movie: {
+        popular: popularMovies,
+        topRated: topRatedMovies,
+        upcoming: upcomingMovies,
+        nowPlaying: nowPlayingMovies,
+      },
+      series: {
+        popular: popularSeries,
+        topRated: topRatedSeries,
+        upcoming: upcomingSeries,
+        nowPlaying: nowPlayingSeries,
+      },
+    };
     return dataMap[type]?.[gene] || [];
   }, [
     type,
@@ -51,7 +50,7 @@ const MovieContainer = ({ gene, type }) => {
   const [showRight, setShowRight] = useState(true);
   const [activeId, setActiveId] = useState(null);
   const [active, setActive] = useState(options[0]);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTouchDevice] = useState(() => window.matchMedia("(pointer: coarse)").matches);
 
   const checkScroll = () => {
     const el = scrollRef.current;
@@ -62,7 +61,6 @@ const MovieContainer = ({ gene, type }) => {
 
   useEffect(() => {
     checkScroll();
-    setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
   }, [movies]);
 
   const scroll = (dir) => {

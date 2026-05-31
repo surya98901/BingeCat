@@ -10,7 +10,7 @@ const MovieContaier2 = ({ movies }) => {
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
   const [activeId, setActiveId] = useState(null);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTouchDevice] = useState(() => window.matchMedia("(pointer: coarse)").matches);
   const currentType = useSelector((state) => state.type.currentType); 
 
   const scrollRef = useRef(null);
@@ -27,7 +27,6 @@ const MovieContaier2 = ({ movies }) => {
 
   useEffect(() => {
     checkScroll();
-    setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
   }, [movies]);
 
   const scroll = (dir) => {
