@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { setType } from "../store/slices/typeSlice";
 import { Link } from "react-router-dom";
+import { clearChatAiSuggestedMovies } from "../store/slices/userSlice";
 
 const MOVIE_GENRES = {
   "Action & Adventure": [28, 12],
@@ -72,6 +73,7 @@ const ForYouPage = () => {
   const dispatch = useDispatch();
   dispatch(setType(resultTab == "movies" ? "movies" : "series"))
   const pathType = useSelector((state)=>state.type.currentType)
+  const chatAiSuggestedMovies = useSelector((state) => state.user.chatAiSuggestedMovies) || [];
   const toggleHandler = (value, state, setState) => {
     setState((prev) =>
       prev.includes(value)
@@ -216,6 +218,49 @@ const ForYouPage = () => {
       setStep((prev) => prev - 1);
     }
   };
+
+  if (chatAiSuggestedMovies.length > 0) {
+    return (
+      <div className="min-h-screen w-full px-4 sm:px-12 md:px-24 lg:px-32 xl:px-48 pt-24 sm:pt-30 bg-white dark:bg-black">
+        <div className="flex flex-col gap-8 w-full max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 border-b border-zinc-200 dark:border-zinc-800 pb-6">
+            <div>
+              <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400">
+                AI Chat Picks
+              </h1>
+              <p className="text-zinc-500 dark:text-zinc-400 mt-2 text-sm md:text-base">
+                Here are the recommendations recommended by the BingeCat Assistant in the chat.
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                dispatch(clearChatAiSuggestedMovies());
+                handleReset();
+              }}
+              className="rounded-2xl border border-purple-700 px-6 py-3 text-sm font-bold text-purple-700 hover:bg-purple-700 hover:text-white transition duration-300 w-full md:w-auto"
+            >
+              Clear Recommendations
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+            {chatAiSuggestedMovies.map((movie) => {
+              const movieType = "title" in movie && !("name" in movie) ? "movies" : "series";
+              return (
+                <Link to={`/BingeCat/${movieType}/${movie.id}`} key={movie.id}>
+                  <MovieCard
+                    movie={{ ...movie, type: movieType === "movies" ? "movies" : "series" }}
+                    className="w-full transition-all duration-300 hover:scale-[1.03]"
+                  />
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (showResults) {
     return (

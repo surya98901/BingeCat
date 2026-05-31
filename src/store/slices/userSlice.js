@@ -6,6 +6,8 @@ const initialState = {
   tvShowWatchList: [],
   likedMovies: [],
   likedTvShows: [],
+  geminiSuggestedMovies: [],
+  chatAiSuggestedMovies: [],
 };
 
 const userSlice = createSlice({
@@ -94,6 +96,20 @@ const userSlice = createSlice({
     clearLikedTvShows: (state) => {
       state.likedTvShows = [];
     },
+
+    setGeminiSuggestedMovies: (state, action) => {
+      state.geminiSuggestedMovies = action.payload;
+    },
+    clearGeminiSuggestedMovies: (state) => {
+      state.geminiSuggestedMovies = [];
+    },
+
+    setChatAiSuggestedMovies: (state, action) => {
+      state.chatAiSuggestedMovies = action.payload;
+    },
+    clearChatAiSuggestedMovies: (state) => {
+      state.chatAiSuggestedMovies = [];
+    },
   },
 });
 
@@ -113,6 +129,10 @@ export const {
   addLikedTvShow,
   removeLikedTvShow,
   clearLikedTvShows,
+  setGeminiSuggestedMovies,
+  clearGeminiSuggestedMovies,
+  setChatAiSuggestedMovies,
+  clearChatAiSuggestedMovies,
 } = userSlice.actions;
 
 export default userSlice.reducer;

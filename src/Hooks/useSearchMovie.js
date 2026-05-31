@@ -1,7 +1,8 @@
 import { API_OPTIONS } from "../assets/constants";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { addGptSuggestedMovies } from "../store/slices/moviesSlice";;
+import { addGptSuggestedMovies } from "../store/slices/moviesSlice";
+import { setGeminiSuggestedMovies } from "../store/slices/userSlice";
 
 const useSearchMovie = (queryList = []) => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const useSearchMovie = (queryList = []) => {
 
         for (const query of queryList) {
           const response = await fetch(
-            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`,
+            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&language=en-US&page=1`,
             API_OPTIONS
           );
           const data = await response.json();
@@ -26,6 +27,7 @@ const useSearchMovie = (queryList = []) => {
         }
 
         dispatch(addGptSuggestedMovies(allResults)); 
+        dispatch(setGeminiSuggestedMovies(allResults)); 
       } catch (error) {
         console.error("Failed to fetch GPT suggested movies:", error);
       }

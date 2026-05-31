@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { GoogleGenAI } from "@google/genai";
 
 import {
   Trash2,
@@ -11,16 +12,35 @@ import {
 } from "lucide-react";
 
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import useSearchMovie from "../Hooks/useSearchMovie";
+import { clearGeminiSuggestedMovies, setChatAiSuggestedMovies } from "../store/slices/userSlice";
+import MovieCard from "./MovieCard";
+import { Link } from "react-router-dom";
+
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY || "" });
 
 const BingecatChatAI = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [chatList, setChatList] = useState([]);
+  const [chatList, setChatList] = useState([
+    {
+      role: "model",
+      text: "Good afternoon! 👋\n\nAfternoon vibes! 🎬 Great time for a drama or action flick.\n\nWhat are you in the mood for?",
+    },
+  ]);
 
   const [text, setText] = useState("");
 
   const [quickActions, setQuickActions] = useState(true);
+
+  const [isTyping, setIsTyping] = useState(false);
+  const [searchQueries, setSearchQueries] = useState([]);
+  const dispatch = useDispatch();
+
+  useSearchMovie(searchQueries);
+
+  const geminiSuggestedMovies = useSelector((state) => state.user.geminiSuggestedMovies) || [];
 
   const messagesEndRef = useRef(null);
 
@@ -57,7 +77,30 @@ const BingecatChatAI = () => {
     }
   }, [isOpen]);
 
-  function handleSend(customText) {
+  useEffect(() => {
+    if (searchQueries.length > 0 && geminiSuggestedMovies.length >= 0) {
+      const slicedMovies = geminiSuggestedMovies.slice(0, 10);
+      setChatList((prev) => [
+        ...prev,
+        {
+          role: "model",
+          text: geminiSuggestedMovies.length > 0
+            ? "Here are the movie recommendations I found on TMDB for you:"
+            : "I found some recommendations, but was unable to locate them on TMDB. Try another search!",
+          movies: slicedMovies,
+          hasMore: geminiSuggestedMovies.length > 10,
+        },
+      ]);
+      if (geminiSuggestedMovies.length > 0) {
+        dispatch(setChatAiSuggestedMovies(geminiSuggestedMovies));
+      }
+      dispatch(clearGeminiSuggestedMovies());
+      setSearchQueries([]);
+      setIsTyping(false);
+    }
+  }, [geminiSuggestedMovies, dispatch, searchQueries]);
+
+  const handleSend = async (customText) => {
     if (!currUser) {
       alert("please signin Or create an account to get use BingeCat Ai");
       return;
@@ -66,13 +109,66 @@ const BingecatChatAI = () => {
 
     if (message.trim() === "") return;
 
-    setChatList((prev) => [...prev, message]);
-
+    setChatList((prev) => [...prev, { role: "user", text: message }]);
     setText("");
-  }
+    setIsTyping(true);
+
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash-lite",
+        config: {
+          systemInstruction:
+            "You are an expert movie/tv show recommendation engine. Based on the user's preference, recommend exactly 3 to 5 movie/tv shows titles. Return ONLY the titles of the movie/tv show as a clean JSON string array of titles, e.g. [\"Movie 1\", \"Movie 2\", \"Movie 3\"]. Do not include any other conversational text, headers, markdown fences, or explanations. Only return the JSON array.",
+        },
+        contents: `Recommend movies/tv shows based on this preference: "${message}"`,
+      });
+
+      const responseText = response.text || "[]";
+      let titles = [];
+      try {
+        const cleaned = responseText.replace(/```json|```/g, "").trim();
+        titles = JSON.parse(cleaned);
+      } catch (e) {
+        titles = responseText
+          .split(/[,\n]/)
+          .map((t) => t.trim().replace(/^-\s*/, "").replace(/^"\s*|\s*"$/g, ""))
+          .filter(Boolean);
+      }
+
+      if (titles.length === 0) {
+        setChatList((prev) => [
+          ...prev,
+          {
+            role: "model",
+            text: "Sorry, I couldn't find any movie recommendations for that.",
+          },
+        ]);
+        setIsTyping(false);
+      } else {
+        setSearchQueries(titles);
+      }
+    } catch (error) {
+      console.error("Gemini API Error:", error);
+      setChatList((prev) => [
+        ...prev,
+        {
+          role: "model",
+          text: "Sorry, I ran into an issue connecting to the Gemini service. Please check your network and VITE_GEMINI_API_KEY configuration.",
+        },
+      ]);
+      setIsTyping(false);
+    }
+  };
 
   function handleClearChat() {
-    setChatList([]);
+    setChatList([
+      {
+        role: "model",
+        text: "Good afternoon! 👋\n\nAfternoon vibes! 🎬 Great time for a drama or action flick.\n\nWhat are you in the mood for?",
+      },
+    ]);
+    dispatch(clearGeminiSuggestedMovies());
+    setSearchQueries([]);
   }
 
   return (
@@ -161,66 +257,106 @@ const BingecatChatAI = () => {
           </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-5 space-y-5 no-scrollbar bg-zinc-50 dark:bg-black">
-            {}
-            <div className="flex gap-3 items-start">
-              <div className="bg-gradient-to-br from-purple-500 to-purple-700 p-2 rounded-full shadow-lg shadow-purple-900/40 flex-shrink-0">
-                <Sparkles size={14} className="text-white" />
+            {chatList.map((msg, index) => {
+              if (msg.role === "model") {
+                return (
+                  <div className="flex flex-col gap-3 items-start w-full" key={index}>
+                    <div className="flex gap-3 items-start w-full">
+                      <div className="bg-gradient-to-br from-purple-500 to-purple-700 p-2 rounded-full shadow-lg shadow-purple-900/40 flex-shrink-0">
+                        <Sparkles size={14} className="text-white" />
+                      </div>
+
+                      <motion.div
+                        initial={{
+                          opacity: 0,
+                          y: 10,
+                        }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                        }}
+                        className="bg-purple-700 text-white rounded-3xl rounded-tl-md p-5 max-w-[85%] shadow-lg"
+                      >
+                        <p className="text-[15px] leading-7 whitespace-pre-line">{msg.text}</p>
+                      </motion.div>
+                    </div>
+
+                    {msg.movies && msg.movies.length > 0 && (
+                      <div className="pl-10 w-full overflow-x-auto no-scrollbar py-2">
+                        <div className="grid grid-cols-2 gap-2 ">
+                          {msg.movies.map((movie) => {
+                            const movieType = "title" in movie && !("name" in movie) ? "movies" : "series";
+                            return (
+                              <Link to={`/BingeCat/${movieType}/${movie.id}`} key={movie.id} onClick={() => setIsOpen(false)}>
+                                <MovieCard
+                                  movie={{ ...movie, type: movieType === "movies" ? "movies" : "series" }}
+                                  className="w-[120px] sm:w-[140px] flex-shrink-0 transition-transform duration-300 hover:scale-105"
+                                />
+                              </Link>
+                            );
+                          })}
+                        </div>
+                        {msg.hasMore && (
+                          <div className="mt-3 flex justify-start">
+                            <Link
+                              to="/BingeCat/for-you"
+                              onClick={() => setIsOpen(false)}
+                              className="text-xs font-bold text-white hover:underline flex items-center gap-1 bg-purple-800 hover:bg-purple-900 px-3 py-1.5 rounded-lg transition duration-300"
+                            >
+                              See more
+                            </Link>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              } else {
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{
+                      opacity: 0,
+                      y: 10,
+                      scale: 0.96,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                    }}
+                    transition={{
+                      duration: 0.18,
+                    }}
+                    className="flex items-end gap-3 justify-end"
+                  >
+                    <div className="bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-3xl rounded-br-md px-5 py-4 max-w-[80%] shadow-lg break-words">
+                      <p className="text-[15px] leading-7">{msg.text}</p>
+                    </div>
+
+                    <div className="bg-zinc-200 dark:bg-zinc-800 p-2 rounded-full flex-shrink-0">
+                      <User
+                        size={15}
+                        className="text-zinc-700 dark:text-zinc-300"
+                      />
+                    </div>
+                  </motion.div>
+                );
+              }
+            })}
+
+            {isTyping && (
+              <div className="flex gap-3 items-start">
+                <div className="bg-gradient-to-br from-purple-500 to-purple-700 p-2 rounded-full shadow-lg shadow-purple-900/40 flex-shrink-0">
+                  <Sparkles size={14} className="text-white" />
+                </div>
+                <div className="bg-purple-700/80 text-white rounded-3xl rounded-tl-md px-4 py-3 shadow-lg flex items-center gap-1.5 h-11">
+                  <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
+                  <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
+                  <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></span>
+                </div>
               </div>
-
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  y: 10,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                className="bg-purple-700 text-white rounded-3xl rounded-tl-md p-5 max-w-[85%] shadow-lg"
-              >
-                <p className="text-lg font-medium">Good afternoon! 👋</p>
-
-                <p className="mt-4 text-[15px] leading-7">
-                  Afternoon vibes! 🎬 Great time for a drama or action flick.
-                </p>
-
-                <p className="mt-5 text-[15px]">
-                  What are you in the mood for?
-                </p>
-              </motion.div>
-            </div>
-
-            {}
-            {chatList.map((message, index) => (
-              <motion.div
-                key={index}
-                initial={{
-                  opacity: 0,
-                  y: 10,
-                  scale: 0.96,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                }}
-                transition={{
-                  duration: 0.18,
-                }}
-                className="flex items-end gap-3 justify-end"
-              >
-                <div className="bg-purple-700 text-white rounded-3xl rounded-br-md px-5 py-4 max-w-[80%] shadow-lg break-words">
-                  <p className="text-[15px] leading-7">{message}</p>
-                </div>
-
-                <div className="bg-zinc-200 dark:bg-zinc-800 p-2 rounded-full flex-shrink-0">
-                  <User
-                    size={15}
-                    className="text-zinc-700 dark:text-zinc-300"
-                  />
-                </div>
-              </motion.div>
-            ))}
+            )}
 
             <div ref={messagesEndRef} />
           </div>
